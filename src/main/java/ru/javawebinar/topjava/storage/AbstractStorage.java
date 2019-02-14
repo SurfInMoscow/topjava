@@ -30,32 +30,56 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void update(Meal meal) {
-
+        LOG.info("Update " + meal);
+        SK searchKey = null;
+        try {
+            searchKey = getExistedSearchKey(meal.getId());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        doUpdate(meal, searchKey);
     }
 
     @Override
     public void save(Meal meal) {
-
+        LOG.info("Save " + meal);
+        SK searchKey = null;
+        try {
+            searchKey = getNotExistedSearchKey(meal.getId());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        doSave(meal, searchKey);
     }
 
     @Override
     public Meal getMealByID(int id) {
-        return null;
+        LOG.info("Save " + id);
+        SK searchKey = null;
+        try {
+            searchKey = getExistedSearchKey(id);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return doGet(searchKey);
     }
 
     @Override
     public void delete(int id) {
-
+        LOG.info("Delete " + id);
+        SK searchKey = null;
+        try {
+            searchKey = getExistedSearchKey(id);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        doDelete(searchKey);
     }
 
     @Override
     public List<Meal> getAll() {
-        return null;
-    }
-
-    @Override
-    public int size() {
-        return 0;
+        LOG.info("Get list of Meals");
+        return doCopyAll();
     }
 
     private SK getExistedSearchKey(int id) throws InterruptedException {

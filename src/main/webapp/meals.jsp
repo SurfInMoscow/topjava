@@ -18,6 +18,7 @@
             <th>description</th>
             <th>calories</th>
             <th>excess</th>
+            <th>Unique ID</th>
         </tr>
         <c:forEach var="meals" items="${meals}">
             <tr>
@@ -35,6 +36,7 @@
                     <td style="color: forestgreen">${meals.calories}</td>
                     <td style="color: forestgreen">${meals.excess}</td>
                 </c:if>
+                <td>${meals.id} <a href="meals?id=${meals.id}&action=delete"><input type="button" value="Удалить"></a></td>
             </tr>
         </c:forEach>
     </table>

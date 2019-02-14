@@ -3,12 +3,12 @@ package ru.javawebinar.topjava.storage;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MapStorage extends AbstractStorage<Meal> {
-    private Map<Integer, Meal> mealMap = new HashMap<>();
+    private Map<Integer, Meal> mealMap = new ConcurrentHashMap<>();
 
     @Override
     protected Meal getSearchKey(int id) {
