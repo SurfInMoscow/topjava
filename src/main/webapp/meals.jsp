@@ -1,4 +1,3 @@
-<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
@@ -36,11 +35,14 @@
                     <td style="color: forestgreen">${meals.calories}</td>
                     <td style="color: forestgreen">${meals.excess}</td>
                 </c:if>
-                <td>${meals.id} <a href="meals?id=${meals.id}&action=delete"><input type="button" value="Удалить"></a></td>
+                <td>${meals.id}
+                    <a href="meals?id=${meals.id}&action=edit"><input type="button" value="Редактировать"></a>
+                    <a href="meals?id=${meals.id}&action=delete"><input type="button" value="Удалить"></a>
+                </td>
             </tr>
         </c:forEach>
     </table>
+    <p><a href="https://ya.ru"><input type="button" value="Добавить"></a></p>
 </section>
-
 </body>
 </html>
