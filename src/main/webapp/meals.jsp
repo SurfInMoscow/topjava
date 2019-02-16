@@ -42,7 +42,7 @@
             </tr>
         </c:forEach>
     </table>
-    <p><a href="https://ya.ru"><input type="button" value="Добавить"></a></p>
+    <p><a href="meals?action=new"><input type="button" value="Добавить"></a></p>
 </section>
 </body>
 </html>
