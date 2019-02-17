@@ -6,6 +6,15 @@
 <head>
     <link rel="stylesheet" href="css/style.css">
     <title>List of Meals with exceed</title>
+    <style>
+        .normal {
+            color: green;
+        }
+
+        .excess {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
@@ -20,21 +29,13 @@
             <th>Unique ID</th>
         </tr>
         <c:forEach var="meals" items="${meals}">
-            <tr>
-                <jsp:useBean id="meals" type="ru.javawebinar.topjava.model.MealTo"/>
-                <c:if test="${meals.excess == true}">
-                    <td style="color: crimson">${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
+            <jsp:useBean id="meals" type="ru.javawebinar.topjava.model.MealTo"/>
+            <tr class="${meals.excess ? 'excess' : 'normal'}">
+                    <td>${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
                     <%--<td><%=meals.getDateTime().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))%></td>--%>
-                    <td style="color: crimson">${meals.description}</td>
-                    <td style="color: crimson">${meals.calories}</td>
-                    <td style="color: crimson">${meals.excess}</td>
-                </c:if>
-                <c:if test="${meals.excess == false}">
-                    <td style="color: forestgreen">${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
-                    <td style="color: forestgreen">${meals.description}</td>
-                    <td style="color: forestgreen">${meals.calories}</td>
-                    <td style="color: forestgreen">${meals.excess}</td>
-                </c:if>
+                    <td>${meals.description}</td>
+                    <td>${meals.calories}</td>
+                    <td>${meals.excess}</td>
                 <td>${meals.id}
                     <a href="meals?id=${meals.id}&action=edit"><input type="button" value="Редактировать"></a>
                     <a href="meals?id=${meals.id}&action=delete"><input type="button" value="Удалить"></a>
