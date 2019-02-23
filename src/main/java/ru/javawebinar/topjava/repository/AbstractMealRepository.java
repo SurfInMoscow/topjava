@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.storage;
+package ru.javawebinar.topjava.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,10 +6,10 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.util.List;
 
-public abstract class AbstractStorage<SK> implements Storage {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractStorage.class.getName());
+public abstract class AbstractMealRepository<SK> implements MealRepository {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractMealRepository.class.getName());
 
-    protected abstract SK getSearchKey(int id);
+    protected abstract SK getSearchKey(Integer id);
 
     protected abstract void doUpdate(Meal meal, SK searchKey);
 
@@ -53,7 +53,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public Meal getMealByID(int id) {
+    public Meal getMealByID(Integer id) {
         LOG.info("Save " + id);
         SK searchKey = null;
         try {
@@ -65,7 +65,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         LOG.info("Delete " + id);
         SK searchKey = null;
         try {
@@ -82,7 +82,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         return doCopyAll();
     }
 
-    private SK getExistedSearchKey(int id) throws InterruptedException {
+    private SK getExistedSearchKey(Integer id) throws InterruptedException {
         SK searchKey = getSearchKey(id);
         if (!isExist(searchKey)) {
            throw new InterruptedException();
@@ -90,7 +90,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         return searchKey;
     }
 
-    private SK getNotExistedSearchKey(int id) throws InterruptedException {
+    private SK getNotExistedSearchKey(Integer id) throws InterruptedException {
         SK searchKey = getSearchKey(id);
         if (isExist(searchKey)) {
             throw new InterruptedException();

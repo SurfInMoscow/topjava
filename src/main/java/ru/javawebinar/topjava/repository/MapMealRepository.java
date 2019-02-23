@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.storage;
+package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.Meal;
 
@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MapStorage extends AbstractStorage<Meal> {
+public class MapMealRepository extends AbstractMealRepository<Meal> {
     private Map<Integer, Meal> mealMap = new ConcurrentHashMap<>();
 
     @Override
-    protected Meal getSearchKey(int id) {
+    protected Meal getSearchKey(Integer id) {
         return mealMap.get(id);
     }
 

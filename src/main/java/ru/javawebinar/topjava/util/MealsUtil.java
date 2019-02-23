@@ -2,8 +2,8 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.storage.MapStorage;
-import ru.javawebinar.topjava.storage.Storage;
+import ru.javawebinar.topjava.repository.MapMealRepository;
+import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,17 +18,18 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 
 public class MealsUtil {
+    public static final int DEFAULT_CALORIES_PER_DAY = 2000;
     public static List<MealTo> mealsWithExcess;
     public static List<Meal> meals;
-    public static Storage storage = new MapStorage();
+    public static MealRepository mealRepository = new MapMealRepository();
 
     static {
-        storage.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
-        storage.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000));
-        storage.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500));
-        storage.save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000));
-        storage.save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500));
-        storage.save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510));
+        mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
+        mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000));
+        mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500));
+        mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000));
+        mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500));
+        mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510));
         meals = Arrays.asList(
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
@@ -38,7 +39,7 @@ public class MealsUtil {
                 new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
         );
         //mealsWithExcess = getFilteredWithExcessByCycle(meals, LocalTime.of(7, 0), LocalTime.of(21, 0), 2000);
-        mealsWithExcess = getFilteredWithExcessByCycle(storage.getAll(), LocalTime.of(7, 0), LocalTime.of(21, 0), 2000);
+        mealsWithExcess = getFilteredWithExcessByCycle(mealRepository.getAll(), LocalTime.of(7, 0), LocalTime.of(21, 0), 2000);
     }
 
     public static void main(String[] args) {
@@ -56,7 +57,7 @@ public class MealsUtil {
         System.out.println(getFilteredWithExcessByCycle(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
         System.out.println(getFilteredWithExcessInOnePass(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
         System.out.println(getFilteredWithExcessInOnePass2(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
-        System.out.println(storage.size());
+        System.out.println(mealRepository.size());
         System.out.println("!!!" + mealsWithExcess);
     }
 

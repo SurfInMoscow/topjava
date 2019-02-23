@@ -3,7 +3,7 @@ package ru.javawebinar.topjava.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.storage.Storage;
+import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.TimeUtil;
 
@@ -18,12 +18,12 @@ import java.time.LocalTime;
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
-    private Storage storage;
+    private MealRepository mealRepository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        storage = MealsUtil.storage;
+        mealRepository = MealsUtil.mealRepository;
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,16 +37,16 @@ public class MealServlet extends HttpServlet {
         Meal m;
         if (id == null) {
             m = new Meal(TimeUtil.stringToLocalDateTime(dateTime), description, Integer.parseInt(calories));
-            storage.save(m);
-            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(storage.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
+            mealRepository.save(m);
+            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
             response.sendRedirect("meals");
         } else {
-            m = storage.getMealByID(Integer.parseInt(id));
+            m = mealRepository.getMealByID(Integer.parseInt(id));
             m.setDateTime(TimeUtil.stringToLocalDateTime(dateTime));
             m.setDescription(description);
             m.setCalories(Integer.parseInt(calories));
-            storage.update(m);
-            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(storage.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
+            mealRepository.update(m);
+            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
             response.sendRedirect("meals");
         }
     }
@@ -58,22 +58,22 @@ public class MealServlet extends HttpServlet {
         String id = request.getParameter("id");
         String action = request.getParameter("action");
         if (action == null) {
-            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(storage.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
+            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
             request.getRequestDispatcher("/meals.jsp").forward(request,response);
             return;
         }
         Meal m;
         switch (action) {
             case "delete":
-                storage.delete(Integer.parseInt(id));
-                request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(storage.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
+                mealRepository.delete(Integer.parseInt(id));
+                request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
                 response.sendRedirect("meals");
                 return;
             case "new":
                 request.getRequestDispatcher("/createMeal.jsp").forward(request,response);
                 return;
             case "edit":
-                m = storage.getMealByID(Integer.parseInt(id));
+                m = mealRepository.getMealByID(Integer.parseInt(id));
                 request.setAttribute("meals", m);
                 request.getRequestDispatcher("/editMeal.jsp").forward(request,response);
                 return;
