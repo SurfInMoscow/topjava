@@ -1,57 +1,37 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.repository.MealRepository;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-public class InMemoryMapMealRepository extends AbstractMealRepository<Meal> {
-    private Map<Integer, Meal> mealMap = new ConcurrentHashMap<>();
-
-    @Override
-    protected Meal getSearchKey(Integer id) {
-        return mealMap.get(id);
-    }
+public class InMemoryMapMealRepository implements MealRepository {
+    private Map<Integer, Map<Integer, Meal>> mealMap = new ConcurrentHashMap<>();
 
     @Override
-    protected void doUpdate(Meal m, Meal meal) {
-        mealMap.put(m.getId(), m);
-    }
-
-    @Override
-    protected boolean isExist(Meal meal) {
-        return meal != null;
-    }
-
-    @Override
-    protected void doSave(Meal m, Meal meal) {
-        mealMap.put(m.getId(), m);
-    }
-
-    @Override
-    protected Meal doGet(Meal meal) {
+    public Meal save(int userId, Meal meal) {
+        mealMap.computeIfAbsent(userId, k -> new HashMap<>());
+        mealMap.get(userId).put(meal.getId(), meal);
         return meal;
     }
 
     @Override
-    protected void doDelete(Meal meal) {
-        mealMap.remove(meal.getId());
+    public void delete(int usrId, int id) {
+        mealMap.get(usrId).remove(id);
     }
 
     @Override
-    protected List<Meal> doCopyAll() {
-        return new ArrayList<>(mealMap.values());
+    public Meal get(int usrId, int id) {
+        return mealMap.get(usrId).get(id);
     }
 
     @Override
-    public void clear() {
-        mealMap.clear();
-    }
-
-    @Override
-    public int size() {
-        return mealMap.size();
+    public List<Meal> getAll(int usrId) {
+        return mealMap.get(usrId).values().stream().sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
     }
 }

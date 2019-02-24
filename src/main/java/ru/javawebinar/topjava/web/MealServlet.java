@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.util.TimeUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -35,20 +34,20 @@ public class MealServlet extends HttpServlet {
         String calories = request.getParameter("calories");
         String id = request.getParameter("id");
         Meal m;
-        if (id == null) {
+        /*if (id == null) {
             m = new Meal(TimeUtil.stringToLocalDateTime(dateTime), description, Integer.parseInt(calories));
             mealRepository.save(m);
             request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
             response.sendRedirect("meals");
         } else {
-            m = mealRepository.getMealByID(Integer.parseInt(id));
+            m = mealRepository.get(Integer.parseInt(id));
             m.setDateTime(TimeUtil.stringToLocalDateTime(dateTime));
             m.setDescription(description);
             m.setCalories(Integer.parseInt(calories));
             mealRepository.update(m);
             request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
             response.sendRedirect("meals");
-        }
+        }*/
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,23 +56,24 @@ public class MealServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
         String action = request.getParameter("action");
+        String userId = request.getParameter("userId");
         if (action == null) {
-            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
+            request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(Integer.parseInt(userId)),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
             request.getRequestDispatcher("/meals.jsp").forward(request,response);
             return;
         }
         Meal m;
         switch (action) {
             case "delete":
-                mealRepository.delete(Integer.parseInt(id));
-                request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
+                mealRepository.delete(Integer.parseInt(userId), Integer.parseInt(id));
+                request.setAttribute("meals", MealsUtil.getFilteredWithExcessByCycle(mealRepository.getAll(Integer.parseInt(userId)),  LocalTime.of(7, 0), LocalTime.of(21, 0), 2000));
                 response.sendRedirect("meals");
                 return;
             case "new":
                 request.getRequestDispatcher("/createMeal.jsp").forward(request,response);
                 return;
             case "edit":
-                m = mealRepository.getMealByID(Integer.parseInt(id));
+                m = mealRepository.get(Integer.parseInt(userId), Integer.parseInt(id));
                 request.setAttribute("meals", m);
                 request.getRequestDispatcher("/editMeal.jsp").forward(request,response);
                 return;

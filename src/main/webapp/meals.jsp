@@ -29,7 +29,7 @@
             <th>Unique ID</th>
         </tr>
         <c:forEach var="meals" items="${meals}">
-            <jsp:useBean id="meals" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meals" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meals.excess ? 'excess' : 'normal'}">
                     <td>${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
                     <%--<td><%=meals.getDateTime().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))%></td>--%>

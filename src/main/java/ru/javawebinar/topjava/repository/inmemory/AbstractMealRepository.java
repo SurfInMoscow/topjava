@@ -8,21 +8,21 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.util.List;
 
 public abstract class AbstractMealRepository<SK> implements MealRepository {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractMealRepository.class.getName());
+    /*private static final Logger LOG = LoggerFactory.getLogger(AbstractMealRepository.class.getName());
 
-    protected abstract SK getSearchKey(Integer id);
+    protected abstract SK getSearchKey( Integer id);
 
-    protected abstract void doUpdate(Meal meal, SK searchKey);
+    protected abstract void doUpdate(Integer userId, Meal meal, SK searchKey);
 
     protected abstract boolean isExist(SK searchKey);
 
-    protected abstract void doSave(Meal meal, SK searchKey);
+    protected abstract void doSave(Integer userId, Meal meal, SK searchKey);
 
-    protected abstract Meal doGet(SK searchKey);
+    protected abstract Meal doGet(Integer userId, SK searchKey);
 
-    protected abstract void doDelete(SK searchKey);
+    protected abstract void doDelete(Integer userId, SK searchKey);
 
-    protected abstract List<Meal> doCopyAll();
+    protected abstract List<Meal> doCopyAll(Integer userId);
 
     @Override
     public void clear() {
@@ -30,7 +30,7 @@ public abstract class AbstractMealRepository<SK> implements MealRepository {
     }
 
     @Override
-    public void update(Meal meal) {
+    public void update(Integer userId, Meal meal) {
         LOG.info("Update " + meal);
         SK searchKey = null;
         try {
@@ -38,11 +38,13 @@ public abstract class AbstractMealRepository<SK> implements MealRepository {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        doUpdate(meal, searchKey);
+        if (userId == meal.getId()) {
+            doUpdate(userId, meal, searchKey);
+        }
     }
 
     @Override
-    public void save(Meal meal) {
+    public void save(Integer userId, Meal meal) {
         LOG.info("Save " + meal);
         SK searchKey = null;
         try {
@@ -50,11 +52,13 @@ public abstract class AbstractMealRepository<SK> implements MealRepository {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        doSave(meal, searchKey);
+        if (userId == meal.getId()) {
+            doSave(userId, meal, searchKey);
+        }
     }
 
     @Override
-    public Meal getMealByID(Integer id) {
+    public Meal getMealByID(Integer userId, Integer id) {
         LOG.info("Save " + id);
         SK searchKey = null;
         try {
@@ -62,11 +66,11 @@ public abstract class AbstractMealRepository<SK> implements MealRepository {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return doGet(searchKey);
+        return (userId == id) ? doGet(userId, searchKey) : null;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer userId, Integer id) {
         LOG.info("Delete " + id);
         SK searchKey = null;
         try {
@@ -74,13 +78,16 @@ public abstract class AbstractMealRepository<SK> implements MealRepository {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        doDelete(searchKey);
+        if (userId == id) {
+            doDelete(userId, searchKey);
+        }
     }
 
     @Override
-    public List<Meal> getAll() {
+    public List<Meal> getAll(Integer userId) {
         LOG.info("Get list of Meals");
-        return doCopyAll();
+        //if user is authorized
+        return doCopyAll(userId);
     }
 
     private SK getExistedSearchKey(Integer id) throws InterruptedException {
@@ -97,5 +104,5 @@ public abstract class AbstractMealRepository<SK> implements MealRepository {
             throw new InterruptedException();
         }
         return searchKey;
-    }
+    }*/
 }
