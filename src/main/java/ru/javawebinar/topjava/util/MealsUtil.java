@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.repository.MapMealRepository;
+import ru.javawebinar.topjava.repository.inmemory.InMemoryMapMealRepository;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ public class MealsUtil {
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
     public static List<MealTo> mealsWithExcess;
     public static List<Meal> meals;
-    public static MealRepository mealRepository = new MapMealRepository();
+    public static MealRepository mealRepository = new InMemoryMapMealRepository();
 
     static {
         mealRepository.save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));

@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.repository;
+package ru.javawebinar.topjava.repository.inmemory;
 
 import ru.javawebinar.topjava.model.Meal;
 
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MapMealRepository extends AbstractMealRepository<Meal> {
+public class InMemoryMapMealRepository extends AbstractMealRepository<Meal> {
     private Map<Integer, Meal> mealMap = new ConcurrentHashMap<>();
 
     @Override
