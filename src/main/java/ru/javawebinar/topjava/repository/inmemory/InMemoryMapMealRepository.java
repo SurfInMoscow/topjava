@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.repository.inmemory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Repository
 public class InMemoryMapMealRepository implements MealRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryMapMealRepository.class);
 

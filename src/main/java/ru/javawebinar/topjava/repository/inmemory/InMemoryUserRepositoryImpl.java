@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -28,7 +29,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         log.info("save {}", user);
-        userMap.put(user.getId(), user);
+        userMap.put(SecurityUtil.authUserId(), user);
         return user;
     }
 
