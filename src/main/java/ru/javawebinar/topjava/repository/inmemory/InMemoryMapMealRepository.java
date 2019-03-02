@@ -43,6 +43,7 @@ public class InMemoryMapMealRepository implements MealRepository {
     @Override
     public List<Meal> getAll(int usrId) {
         log.info("getAll");
+        mealMap.computeIfAbsent(usrId, k -> new HashMap<>());
         return mealMap.get(usrId).values().stream().sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
     }
 }
