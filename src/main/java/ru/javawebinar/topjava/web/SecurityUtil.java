@@ -10,8 +10,8 @@ public class SecurityUtil {
         return usrId;
     }
 
-    void setAuthUserId(int usrId) {
-        this.usrId = usrId;
+    public static void setAuthUserId(int usrId) {
+        SecurityUtil.usrId = usrId;
     }
 
     public static int authUserCaloriesPerDay() {

@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMapMealRepository implements MealRepository {
-    private static final Logger log = LoggerFactory.getLogger(InMemoryMapMealRepository.class);
+    //private static final Logger log = LoggerFactory.getLogger(InMemoryMapMealRepository.class);
 
     //private Map<Integer, Map<Integer, Meal>> mealMap = new ConcurrentHashMap<>();
     private Map<Integer, InMemoryBaseRepositoryImpl<Meal>> mealMap = new ConcurrentHashMap<>();
 
     @Override
     public Meal save(int userId, Meal meal) {
-        log.info("save {}", meal);
+        //log.info("save {}", meal);
         InMemoryBaseRepositoryImpl<Meal> meals = mealMap.computeIfAbsent(userId, k -> new InMemoryBaseRepositoryImpl<>());
         //mealMap.get(userId).put(meal.getId(), meal);
         return meals.save(meal);
@@ -30,7 +30,7 @@ public class InMemoryMapMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int usrId, int id) {
-        log.info("delete {}", id);
+        //log.info("delete {}", id);
         Meal m = get(usrId, id);
         InMemoryBaseRepositoryImpl<Meal> meals = mealMap.get(usrId);
         //return mealMap.get(usrId).remove(id, m);
@@ -39,7 +39,7 @@ public class InMemoryMapMealRepository implements MealRepository {
 
     @Override
     public Meal get(int usrId, int id) {
-        log.info("get {}", id);
+        //log.info("get {}", id);
         InMemoryBaseRepositoryImpl<Meal> meals = mealMap.get(usrId);
         //return mealMap.get(usrId).get(id);
         return meals == null ? null : meals.get(id);
@@ -47,7 +47,7 @@ public class InMemoryMapMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int usrId) {
-        log.info("getAll");
+        //log.info("getAll");
         //mealMap.computeIfAbsent(usrId, k -> new HashMap<>());
         //return mealMap.get(usrId).values().stream().sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
         return getAllFiltered(usrId, meal -> true);
