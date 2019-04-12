@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class InMemoryBaseRepositoryImpl<T extends AbstractBaseEntity>{
     private static AtomicInteger counter = new AtomicInteger(0);
 
-    private Map<Integer, T> entryMap = new ConcurrentHashMap<>();
+    Map<Integer, T> entryMap = new ConcurrentHashMap<>();
 
     public T save(T entry) {
         if (entry.isNew()) {
