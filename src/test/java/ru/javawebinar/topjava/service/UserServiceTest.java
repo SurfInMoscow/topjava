@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -34,6 +35,11 @@ public class UserServiceTest {
         assertMatch(service.getAll(), ADMIN, newUser, USER);
     }
 
+    @Test(expected = DataAccessException.class)
+    public void duplicateMailCreate() throws Exception {
+        service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
+    }
+
     @Test
     public void delete() throws Exception {
         service.delete(USER_ID);
@@ -49,6 +55,11 @@ public class UserServiceTest {
     public void get() throws Exception {
         User user = service.get(USER_ID);
         assertMatch(user, USER);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getNotFound() throws Exception {
+        service.get(1);
     }
 
     @Test
