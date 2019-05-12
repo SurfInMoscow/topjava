@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SpringMain {
     public static void main(String[] args) {
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
+        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-inmemory.xml")) {
             System.out.println("Beans in context: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminRestController = appCtx.getBean(AdminRestController.class);
             adminRestController.create(new User(null, "Pavel", "p.vorobyev@inbox.ru", "12345", Role.ROLE_ADMIN));

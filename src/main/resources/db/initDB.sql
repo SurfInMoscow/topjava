@@ -27,7 +27,7 @@ CREATE TABLE user_roles
 
 CREATE TABLE meals
 (
-    id               SERIAL,
+    id               INTEGER DEFAULT nextval('global_seq'),
     user_id_m        INTEGER NOT NULL,
     dateTime         TIMESTAMP,
     description      VARCHAR NOT NULL,
