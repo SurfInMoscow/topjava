@@ -46,7 +46,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
             Number newKey = insertMeal.executeAndReturnKey(map);
             meal.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update("UPDATE meals SET datetime=:datetime, description=:description, " +
-                                                   "calories=:calories, user_id_m=:user_id_m WHERE id=:id", map) == 0) {
+                                                   "calories=:calories, user_id_m=:user_id_m WHERE id=:id AND user_id_m=:user_id_m", map) == 0) {
             return null;
         }
         return meal;
@@ -54,24 +54,23 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     @Override
     public boolean delete(int usrId, int id) {
-        return jdbcTemplate.update("DELETE FROM meals WHERE id=?", id) != 0;
+        return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id_m=?", id, usrId) != 0;
     }
 
     @Override
     public Meal get(int usrId, int id) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=?", ROW_MAPPER, id);
+        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=? AND user_id_m=?", ROW_MAPPER, id, usrId);
         return DataAccessUtils.singleResult(meals);
     }
 
     @Override
     public List<Meal> getAll(int usrId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id_m=? ORDER BY datetime DESC", ROW_MAPPER, usrId);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id_m=? ORDER BY dateTime DESC", ROW_MAPPER, usrId);
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int usrId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE datetime >= ? AND datetime < ?",
-                                                    ROW_MAPPER, startDate, endDate);
-        return null;
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id_m=? AND dateTime BETWEEN ? AND ? ORDER BY datetime DESC",
+                                                    ROW_MAPPER, usrId, startDate, endDate);
     }
 }
