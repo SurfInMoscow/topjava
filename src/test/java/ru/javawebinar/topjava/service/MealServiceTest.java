@@ -54,7 +54,7 @@ public class MealServiceTest {
 
     @Test
     public void get() throws Exception {
-        Meal meal = service.get(0, USER_MEAL3_ID);
+        Meal meal = service.get(100000, USER_MEAL3_ID);
         assertMatch(meal, userSupper);
     };
 
