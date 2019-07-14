@@ -8,6 +8,17 @@
 
     <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
+    <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
+
+    <!--
+   For postgres driver logging
+   It uses java.util.logging and logged via jul-to-slf4j bridge
+   https://stackoverflow.com/a/27296470/548473
+    -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingBean">
+        <property name="staticMethod" value="org.slf4j.bridge.SLF4JBridgeHandler.install" />
+    </bean>
+
     <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
         <jdbc:script location="classpath:db/initDB.sql"/>
         <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
