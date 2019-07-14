@@ -23,6 +23,7 @@ public class InMemoryMapMealRepository implements MealRepository {
 
     @Override
     public Meal save(int userId, Meal meal) {
+        Objects.requireNonNull(meal, "meal must not be null");
         InMemoryBaseRepositoryImpl<Meal> meals = mealMap.computeIfAbsent(userId, k -> new InMemoryBaseRepositoryImpl<>());
         return meals.save(meal);
     }
@@ -52,13 +53,13 @@ public class InMemoryMapMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int usrId) {
-        //mealMap.computeIfAbsent(usrId, k -> new HashMap<>());
-        //return mealMap.get(usrId).values().stream().sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
         return getAllFiltered(usrId, meal -> true);
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int usrId) {
+        Objects.requireNonNull(startDate, "startDateTime must not be null");
+        Objects.requireNonNull(endDate, "endDateTime must not be null");
         return getAllFiltered(usrId, meal -> Util.isBetween(meal.getDateTime(), startDate, endDate));
     }
 

@@ -13,6 +13,9 @@ public class ValidationUtil {
         checkNotFound(found, "id=" + id);
     }
 
+    private ValidationUtil() {
+    }
+
     public static <T> T checkNotFound(T object, String msg) {
         checkNotFound(object != null, msg);
         return object;
