@@ -8,12 +8,11 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class JpaUserRepository implements UserRepository {
+public class JpaUserRepositoryImpl implements UserRepository {
 
     @PersistenceContext
     private EntityManager em;
