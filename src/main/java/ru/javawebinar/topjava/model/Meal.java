@@ -14,7 +14,8 @@ import java.time.LocalTime;
 @NamedQueries({
         @NamedQuery(name = "deleteMeal", query = "DELETE FROM Meal m WHERE m.id=?1 AND m.user.id=?2"),
         @NamedQuery(name = "getMeal", query = "SELECT m FROM Meal m WHERE m.id=?1 AND m.user.id=?2"),
-        @NamedQuery(name = "getMeals", query = "SELECT m FROM Meal m WHERE m.user.id=?1")
+        @NamedQuery(name = "getMeals", query = "SELECT m FROM Meal m WHERE m.user.id=?1 ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = "getMealsBetween", query = "SELECT m FROM Meal m WHERE m.user.id=?1 AND m.dateTime BETWEEN :startDate AND :endDate")
 })
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id_m", "dateTime"}, name = "meals_unique_user_datetime_idx")})
@@ -35,7 +36,7 @@ public class Meal extends AbstractBaseEntity {
     @Column(name = "calories", nullable = false)
     private int calories;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id_m")
     private User user;
 
@@ -112,13 +113,34 @@ public class Meal extends AbstractBaseEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Meal meal = (Meal) o;
+
+        if (calories != meal.calories) return false;
+        if (!dateTime.equals(meal.dateTime)) return false;
+        return description.equals(meal.description);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + dateTime.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + calories;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Meal{" +
                 "dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
-                //", userId=" + //userId +
-                ", id=" + id +
+                ", user=" + user +
                 '}';
     }
 }

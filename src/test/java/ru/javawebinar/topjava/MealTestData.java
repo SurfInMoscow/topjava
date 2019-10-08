@@ -12,7 +12,7 @@ public class MealTestData {
 
     public static final int USER_MEAL1_ID = START_SEQ + 2;
     public static final int USER_MEAL2_ID = START_SEQ + 3;
-    public static final int USER_MEAL3_ID = START_SEQ + 4;
+    public static final int USER_MEAL3_ID = START_SEQ +4;
     public static final int ADMIN_MEAL1_ID = START_SEQ + 5;
 
     public static final Meal userBreakfast = new Meal(USER_MEAL1_ID, LocalDateTime.of(2019, 5, 4, 10, 0), "завтрак", 500);

@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -14,9 +14,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
-import static ru.javawebinar.topjava.MealTestData.*;
 
 @ContextConfiguration({"classpath:spring/spring-app.xml",
                         "classpath:spring/spring-db.xml"})
@@ -49,7 +49,8 @@ public class MealServiceTest {
     @Test
     public void get() throws Exception {
         Meal meal = service.get(100000, USER_MEAL3_ID);
-        assertMatch(meal, userSupper);
+        Assert.assertEquals(meal, userSupper);
+        //assertMatch(new Meal(meal.getUser().getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories()), userSupper);
     };
 
     @Test(expected = NotFoundException.class)
