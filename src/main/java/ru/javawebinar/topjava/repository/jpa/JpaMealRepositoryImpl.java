@@ -18,17 +18,19 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * https://stackoverflow.com/questions/5482141/what-is-the-difference-between-entitymanager-find-and-entitymanger-getreferenc
+     * use getReference() instead of find()
+     */
     @Override
     @Transactional
     public Meal save(int userId, Meal meal) {
+        meal.setUser(em.find(User.class, userId));
         if (meal.isNew()) {
-            meal.setUser(em.find(User.class, userId));
             em.persist(meal);
             return meal;
         } else {
-            meal.setUser(em.find(User.class, userId));
-            em.merge(meal);
-            return meal;
+            return em.merge(meal);
         }
     }
 
@@ -42,8 +44,10 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal get(int usrId, int id) {
-        return em.createNamedQuery("getMeal", Meal.class).setParameter(1, id)
-                .setParameter(2, usrId).getSingleResult();
+        /*return em.createNamedQuery("getMeal", Meal.class).setParameter(1, id)
+                .setParameter(2, usrId).getSingleResult();*/
+        Meal meal = em.find(Meal.class, id);
+        return meal != null && meal.getUser().getId() == usrId ? meal : null;
     }
 
     @Override

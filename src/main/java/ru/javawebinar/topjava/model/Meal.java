@@ -11,11 +11,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = "deleteMeal", query = "DELETE FROM Meal m WHERE m.id=?1 AND m.user.id=?2"),
-        @NamedQuery(name = "getMeal", query = "SELECT m FROM Meal m WHERE m.id=?1 AND m.user.id=?2"),
+        //@NamedQuery(name = "getMeal", query = "SELECT m FROM Meal m WHERE m.id=?1 AND m.user.id=?2"),
         @NamedQuery(name = "getMeals", query = "SELECT m FROM Meal m WHERE m.user.id=?1 ORDER BY m.dateTime DESC"),
-        @NamedQuery(name = "getMealsBetween", query = "SELECT m FROM Meal m WHERE m.user.id=?1 AND m.dateTime BETWEEN :startDate AND :endDate")
+        @NamedQuery(name = "getMealsBetween", query = "SELECT m FROM Meal m WHERE m.user.id=?1 AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC")
 })
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id_m", "dateTime"}, name = "meals_unique_user_datetime_idx")})
@@ -25,7 +26,6 @@ public class Meal extends AbstractBaseEntity {
     @Column(name = "dateTime", nullable = false, columnDefinition = "timestamp default now()")
     private LocalDateTime dateTime;
 
-    @NotNull
     @NotBlank
     @Size(max = 100)
     @Column(name = "description", nullable = false)
@@ -36,7 +36,7 @@ public class Meal extends AbstractBaseEntity {
     @Column(name = "calories", nullable = false)
     private int calories;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_m")
     private User user;
 

@@ -69,7 +69,7 @@ public class MealServiceTest {
     @Test//(expected = org.springframework.dao.EmptyResultDataAccessException.class)
     public void getNotFound() throws Exception {
         logger.getLog().info("getNotFound() test time - {}", LocalDateTime.now());
-        expectedException.expect(org.springframework.dao.EmptyResultDataAccessException.class);
+        expectedException.expect(ru.javawebinar.topjava.util.exception.NotFoundException.class);
         service.get(0, 1);
     }
 
