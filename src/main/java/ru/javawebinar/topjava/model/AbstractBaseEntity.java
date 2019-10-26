@@ -3,11 +3,12 @@ package ru.javawebinar.topjava.model;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import org.springframework.data.domain.Persistable;
 
 @MappedSuperclass
 // http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
 @Access(AccessType.FIELD)
-public class AbstractBaseEntity {
+public class AbstractBaseEntity implements Persistable<Integer>{
     public static final int START_SEQ=100000;
 
     @Id
