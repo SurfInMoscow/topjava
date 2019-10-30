@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
@@ -23,12 +25,14 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @CacheEvict(value = "meals", allEntries = true)
     public Meal save(int userId, Meal meal) {
         Assert.notNull(meal, "meal must not be null");
         return repository.save(userId, meal);
     }
 
     @Override
+    @CacheEvict(value = "meals", allEntries = true)
     public void delete(int usrId, int id) throws NotFoundException {
        checkNotFoundWithId(repository.delete(usrId, id), id);
     }
@@ -39,17 +43,20 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @CacheEvict(value = "meals", allEntries = true)
     public void update(int usrId, Meal meal) {
         Assert.notNull(meal, "meal must not be null");
         checkNotFoundWithId(repository.save(usrId, meal), meal.getId());
     }
 
     @Override
+    @Cacheable("meals")
     public List<Meal> getAll(int usrId) {
         return repository.getAll(usrId);
     }
 
     @Override
+    @Cacheable("meals")
     public List<Meal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int usrId) {
         Assert.notNull(startDateTime, "startDateTime must not be null");
         Assert.notNull(endDateTime, "endDateTime  must not be null");

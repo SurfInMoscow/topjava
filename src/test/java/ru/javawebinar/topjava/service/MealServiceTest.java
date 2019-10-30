@@ -1,9 +1,6 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
@@ -11,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -22,6 +20,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -53,6 +52,11 @@ public class MealServiceTest {
         }
     };
 
+    @Before
+    public void setUp() throws Exception {
+        Objects.requireNonNull(cacheManager.getCache("meals")).clear();
+    }
+
     @AfterClass
     public static void printResult() {
         log.info("\n---------------------------------" +
@@ -64,6 +68,9 @@ public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Test
     public void save() throws Exception {
