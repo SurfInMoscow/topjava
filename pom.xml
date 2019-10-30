@@ -143,6 +143,13 @@
             <version>${ehcache.version}</version>
         </dependency>
 
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
+
         <!--https://medium.com/criciumadev/its-time-migrating-to-java-11-5eb3868354f9-->
         <!--Include java.xml.bind module dependency because those modules were removed in JDK 11 by JEP-320-->
         <dependency>

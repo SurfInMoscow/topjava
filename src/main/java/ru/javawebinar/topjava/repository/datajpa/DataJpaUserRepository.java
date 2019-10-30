@@ -13,7 +13,11 @@ public class DataJpaUserRepository implements UserRepository {
     private static final Sort SORT_NAME_EMAIL = new Sort(Sort.Direction.ASC, "name", "email");
 
     @Autowired
-    private CrudUserRepository crudUserRepository;
+    private final CrudUserRepository crudUserRepository;
+
+    public DataJpaUserRepository(CrudUserRepository crudUserRepository) {
+        this.crudUserRepository = crudUserRepository;
+    }
 
     @Override
     public User save(User user) {
