@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public abstract class JdbcMealRepositoryImpl<T> implements MealRepository {
+public class JdbcMealRepositoryImpl implements MealRepository {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -28,7 +29,8 @@ public abstract class JdbcMealRepositoryImpl<T> implements MealRepository {
 
     private final SimpleJdbcInsert insertMeal;
 
-    JdbcMealRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    @Autowired
+    public JdbcMealRepositoryImpl (JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
@@ -37,42 +39,13 @@ public abstract class JdbcMealRepositoryImpl<T> implements MealRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-
-    protected abstract T toDbDateTime(LocalDateTime ldt);
-
-    @Repository
-    @Profile(Profiles.POSTGRES_DB)
-    public static class Java8JdbcMealRepository extends JdbcMealRepositoryImpl<LocalDateTime> {
-        public Java8JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-            super(jdbcTemplate, namedParameterJdbcTemplate);
-        }
-
-        @Override
-        protected LocalDateTime toDbDateTime(LocalDateTime ldt) {
-            return ldt;
-        }
-    }
-
-    @Repository
-    @Profile(Profiles.HSQL_DB)
-    public static class TimestampJdbcMealRepository extends JdbcMealRepositoryImpl<Timestamp> {
-        public TimestampJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-            super(jdbcTemplate, namedParameterJdbcTemplate);
-        }
-
-        @Override
-        protected Timestamp toDbDateTime(LocalDateTime ldt) {
-            return Timestamp.valueOf(ldt);
-        }
-    }
-
     @Override
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("dateTime", toDbDateTime(meal.getDateTime()))
+                .addValue("dateTime", meal.getDateTime())
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
@@ -112,6 +85,6 @@ public abstract class JdbcMealRepositoryImpl<T> implements MealRepository {
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND dateTime BETWEEN  ? AND ? ORDER BY dateTime DESC",
-                ROW_MAPPER, userId, toDbDateTime(startDate), toDbDateTime(endDate));
+                ROW_MAPPER, userId, startDate, endDate);
     }
 }
