@@ -1,10 +1,10 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -12,13 +12,22 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.javawebinar.topjava.UserTestData.*;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles({"postgres", "jpa"})
-public class UserServiceJPATest extends AbstractServiceTest {
+public abstract class AbstractUserServiceTest extends AbstractServiceTest {
+    @Autowired
+    protected UserService userService;
+
+    @Autowired
+    protected CacheManager cacheManager;
+
+    @Before
+    public void setUp() throws Exception {
+        Objects.requireNonNull(cacheManager.getCache("users")).clear();
+    }
+
     @Override
     @Test
     public void save() throws Exception {

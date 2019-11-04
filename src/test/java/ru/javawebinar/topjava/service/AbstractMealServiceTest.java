@@ -1,23 +1,33 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles({"postgres", "datajpa"})
-public class MealServiceDataJPATest extends AbstractServiceTest {
+public abstract class AbstractMealServiceTest extends AbstractServiceTest {
+    @Autowired
+    protected MealService mealService;
+
+    @Autowired
+    protected CacheManager cacheManager;
+
+    @Before
+    public void setUp() throws Exception {
+        Objects.requireNonNull(cacheManager.getCache("meals")).clear();
+    }
+
     @Override
     @Test
     public void save() throws Exception {
@@ -46,7 +56,6 @@ public class MealServiceDataJPATest extends AbstractServiceTest {
     public void get() throws Exception {
         Meal meal = mealService.get(100000, USER_MEAL3_ID);
         Assert.assertEquals(meal, userSupper);
-        Assert.assertEquals(meal.getUser().getEmail(), "user@yandex.ru");
         //assertMatch(new Meal(meal.getUser().getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories()), userSupper);
     }
 
@@ -69,7 +78,7 @@ public class MealServiceDataJPATest extends AbstractServiceTest {
 
     @Test
     public void updateNotFound() throws Exception {
-        expectedException.expect(org.springframework.dao.DataIntegrityViolationException.class);
+        expectedException.expect(Exception.class);
         Meal updated = new Meal(LocalDateTime.of(2019, 5, 4, 15, 0), "чай", 100);
         updated.setId(USER_ID);
         mealService.update(ADMIN_ID, updated);

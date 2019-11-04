@@ -1,10 +1,8 @@
 package ru.javawebinar.topjava.web;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.StandardEnvironment;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
@@ -19,6 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.Profiles.REPOSITORY_IMPLEMENTATION;
+
 public class MealServlet extends HttpServlet {
 
     private MealRestController mealRestController;
@@ -27,7 +27,10 @@ public class MealServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        appCtx = new ClassPathXmlApplicationContext(new String[]{
+                "classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"}, false);
+        appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), REPOSITORY_IMPLEMENTATION);
+        appCtx.refresh();
         this.mealRestController = appCtx.getBean(MealRestController.class);
     }
 
@@ -52,7 +55,7 @@ public class MealServlet extends HttpServlet {
             LocalTime startTime = TimeUtil.parseLocalTime(request.getParameter("startTime"));
             LocalTime endTime = TimeUtil.parseLocalTime(request.getParameter("endTime"));
             request.setAttribute("meals", mealRestController.getBetween(startDate, startTime, endDate, endTime));
-            request.getRequestDispatcher("/meals.jsp").forward(request,response);
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
         } else if (id == null) {
             m = new Meal(TimeUtil.stringToLocalDateTime(dateTime), description, Integer.parseInt(calories));
             mealRestController.save(m);
@@ -75,7 +78,7 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (action == null) {
             request.setAttribute("meals", mealRestController.getAll());
-            request.getRequestDispatcher("/meals.jsp").forward(request,response);
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
             return;
         }
         Meal m;
@@ -86,15 +89,15 @@ public class MealServlet extends HttpServlet {
                 response.sendRedirect("meals");
                 return;
             case "new":
-                request.getRequestDispatcher("/createMeal.jsp").forward(request,response);
+                request.getRequestDispatcher("/createMeal.jsp").forward(request, response);
                 return;
             case "edit":
                 m = mealRestController.get(getId(request));
                 request.setAttribute("meals", m);
-                request.getRequestDispatcher("/editMeal.jsp").forward(request,response);
+                request.getRequestDispatcher("/editMeal.jsp").forward(request, response);
                 return;
-                default:
-                    throw new IllegalArgumentException("Action " + action + " is illegal.");
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal.");
         }
     }
 
