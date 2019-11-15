@@ -8,10 +8,13 @@ import org.springframework.cache.CacheManager;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Objects;
 
+import static java.time.LocalDateTime.of;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
@@ -96,5 +99,12 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
         List<Meal> mealsBetween = mealService.getBetweenDateTimes(LocalDateTime.of(2019, 5, 4, 9, 0),
                 LocalDateTime.of(2019, 5, 4, 14, 0), 100000);
         Assert.assertEquals(2, mealsBetween.size());
+    }
+
+    @Test
+    public void createWithException() throws Exception {
+        validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300)), ConstraintViolationException.class);
+        validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9)), ConstraintViolationException.class);
+        validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001)), ConstraintViolationException.class);
     }
 }
