@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 import ru.javawebinar.topjava.util.Counter;
 
@@ -38,6 +40,7 @@ public class Meal extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_m")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     //private int userId;
