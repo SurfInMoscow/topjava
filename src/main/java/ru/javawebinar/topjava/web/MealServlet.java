@@ -1,8 +1,7 @@
 package ru.javawebinar.topjava.web;
 
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.javawebinar.topjava.Profiles;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
@@ -17,28 +16,17 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import static ru.javawebinar.topjava.Profiles.REPOSITORY_IMPLEMENTATION;
-
 public class MealServlet extends HttpServlet {
 
     private MealRestController mealRestController;
-    private ConfigurableApplicationContext appCtx;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        appCtx = new ClassPathXmlApplicationContext(new String[]{
-                "classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"}, false);
-        appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), REPOSITORY_IMPLEMENTATION);
-        appCtx.refresh();
-        this.mealRestController = appCtx.getBean(MealRestController.class);
+        WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        this.mealRestController = springContext.getBean(MealRestController.class);
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-        appCtx.close();
-    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
