@@ -7,7 +7,7 @@
     <title>New Meal</title>
 </head>
 <body>
-<h3><a href="index.html">Home</a></h3>
+<h3><a href="index.jsp">Home</a></h3>
 <section>
     <button onclick="window.history.back()">Назад</button>
 <form method="post" action="meals" enctype="application/x-www-form-urlencoded">

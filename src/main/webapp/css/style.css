@@ -7,3 +7,11 @@ th, td {
     padding: 15px;
     text-align: left;
 }
+
+header, footer {
+    background: none repeat scroll 0 0 #a0f381;
+    color: #28282c;
+    font-size: 20px;
+    padding: 5px 20px;
+    margin: 6px 0;
+}
