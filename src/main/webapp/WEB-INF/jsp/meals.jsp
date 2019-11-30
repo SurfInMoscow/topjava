@@ -17,7 +17,7 @@
     </style>
 </head>
 <body>
-<h3><a href="index.jsp">Home</a></h3>
+<h3><a href="/topjava">Home</a></h3>
 
 <section>
     <form method="post" action="meals?action=filter">

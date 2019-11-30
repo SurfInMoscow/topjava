@@ -1,16 +1,19 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +28,9 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected CacheManager cacheManager;
+
+    @Autowired
+    protected Environment environment;
 
     @Before
     public void setUp() throws Exception {
@@ -103,8 +109,13 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Test
     public void createWithException() throws Exception {
+        Assume.assumeFalse(isJdbcProfile());
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300)), ConstraintViolationException.class);
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9)), ConstraintViolationException.class);
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001)), ConstraintViolationException.class);
+    }
+
+    private boolean isJdbcProfile() {
+        return Arrays.asList(environment.getActiveProfiles()).contains("jdbc");
     }
 }
