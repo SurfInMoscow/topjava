@@ -1,10 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@taglib uri="http://pavel.vorobev.com" prefix="f" %>
 <html>
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/topjava/resources/css/style.css">
     <title>List of Meals with exceed</title>
     <style>
         .normal {
