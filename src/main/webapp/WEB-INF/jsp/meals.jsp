@@ -4,7 +4,6 @@
 <%@taglib uri="http://pavel.vorobev.com" prefix="f" %>
 <html>
 <head>
-    <link rel="stylesheet" href="/topjava/resources/css/style.css">
     <title>List of Meals with exceed</title>
     <style>
         .normal {
@@ -16,9 +15,9 @@
         }
     </style>
 </head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<h3><a href="/topjava">Home</a></h3>
-
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <form method="post" action="meals?action=filter">
         <dl>

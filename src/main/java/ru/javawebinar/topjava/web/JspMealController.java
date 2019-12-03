@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.service.MealService;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -20,18 +18,15 @@ import java.util.Objects;
 
 @Controller
 public class JspMealController {
-    private final MealService mealService;
     private final MealRestController mealRestController;
 
     @Autowired
-    public JspMealController(MealService mealService, MealRestController mealRestController) {
-        this.mealService = mealService;
+    public JspMealController(MealRestController mealRestController) {
         this.mealRestController = mealRestController;
     }
 
     @GetMapping("/meals")
     public String getMeals(HttpServletRequest request) {
-        int usrId = SecurityUtil.authUserId();
         String action = request.getParameter("action");
         if (action == null) {
             request.setAttribute("meals", mealRestController.getAll());
@@ -40,19 +35,22 @@ public class JspMealController {
         Meal m;
         switch (action) {
             case "delete":
-                mealRestController.delete(getId(request));
-                request.setAttribute("meals", mealRestController.getAll());
-                return "redirect:meals";
+                return deleteMeal(request);
             case "new":
                 return createMeal();
             case "edit":
-                //m = mealService.get(usrId, getId(request));
                 m = mealRestController.get(getId(request));
                 request.setAttribute("meals", m);
                 return editMeal();
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal.");
         }
+    }
+
+    public String deleteMeal(HttpServletRequest request) {
+        mealRestController.delete(getId(request));
+        request.setAttribute("meals", mealRestController.getAll());
+        return "redirect:meals";
     }
 
     private int getId(HttpServletRequest request) {

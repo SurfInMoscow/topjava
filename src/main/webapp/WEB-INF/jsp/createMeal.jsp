@@ -6,8 +6,10 @@
 <head>
     <title>New Meal</title>
 </head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<h3><a href="/topjava">Home</a></h3>
+<jsp:include page="fragments/bodyHeader.jsp"/>
+<br/>
 <section>
     <button onclick="window.history.back()">Назад</button>
 <form method="post" action="meals" enctype="application/x-www-form-urlencoded">

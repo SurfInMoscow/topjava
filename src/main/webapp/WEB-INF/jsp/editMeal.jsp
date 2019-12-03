@@ -7,7 +7,10 @@
     <jsp:useBean id="meals" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <title>Meal ${meals.id} - ${meals.description}</title>
 </head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
+<jsp:include page="fragments/bodyHeader.jsp"/>
+<br/>
 <section>
     <button onclick="window.history.back()">Назад</button>
     <hr>
