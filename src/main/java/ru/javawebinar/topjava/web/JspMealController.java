@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.web.JspCreateMealController.createMeal;
+import static ru.javawebinar.topjava.web.JspEditMealController.editMeal;
+
 @Controller
 public class JspMealController {
     private final MealRestController mealRestController;
@@ -56,16 +59,6 @@ public class JspMealController {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
-    }
-
-    @GetMapping("/createMeal")
-    private String createMeal() {
-        return "createMeal";
-    }
-
-    @GetMapping("/editMeal")
-    private String editMeal() {
-        return "editMeal";
     }
 
     @PostMapping("/meals")
