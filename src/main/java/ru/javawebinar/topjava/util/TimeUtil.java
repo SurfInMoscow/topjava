@@ -3,10 +3,9 @@ package ru.javawebinar.topjava.util;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class TimeUtil {
 
@@ -48,5 +47,10 @@ public class TimeUtil {
 
     public static LocalTime parseLocalTime(@Nullable String str) {
         return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
+    }
+
+    public static Date parseLocalDateTimeToDate(String localDateTime) {
+        LocalDateTime lclDtm = TimeUtil.stringToLocalDateTime(localDateTime);
+        return Date.from(lclDtm.toLocalDate().atTime(lclDtm.getHour(), lclDtm.getMinute(), lclDtm.getSecond()).toInstant(ZoneId.systemDefault().getRules().getOffset(Instant.now())));
     }
 }
