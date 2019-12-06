@@ -39,25 +39,21 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         this.jdbcUserSetExtractor = jdbcUserSetExtractor;
     }
 
-
-    //TODO implemen batch insert for roles, because at the present moment it works with only one role insert!
     @Override
     @Transactional
     public User save(User user) {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
-        Set<Role> userRoles = user.getRoles();
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(parameterSource);
             user.setId(newKey.intValue());
-            userRoles.parallelStream().forEach(
-                    role -> {
-                        jdbcTemplate.execute(String.format("INSERT INTO USER_ROLES (USER_ID, ROLE) VALUES (%d, '%s')", user.getId(), role.toString()));
-                    }
-            );
-        } else if (namedParameterJdbcTemplate.update(
-                "UPDATE users SET name=:name, email=:email, password=:password, " +
-                        "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", parameterSource) == 0) {
-            return null;
+            batchUpdateRoles(user);
+        } else {
+            namedParameterJdbcTemplate.update(
+                    "UPDATE users SET name=:name, email=:email, password=:password, " +
+                            "registered=:registered, enabled=:enabled,  calories_per_day=:caloriesPerDay WHERE id=:id", parameterSource);
+            deleteRoles(user);
+            batchUpdateRoles(user);
+            return user;
         }
         return user;
     }
@@ -83,5 +79,17 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         return jdbcTemplate.query("SELECT * FROM users u LEFT OUTER JOIN user_roles ur on u.id = ur.user_id ORDER BY name, email", jdbcUserSetExtractor);
+    }
+
+    private void batchUpdateRoles(User user) {
+        Set<Role> userRoles = user.getRoles();
+        jdbcTemplate.batchUpdate("INSERT INTO USER_ROLES (USER_ID, ROLE) VALUES (?, ?)", userRoles, userRoles.size(), (ps, argument) -> {
+            ps.setInt(1, user.getId());
+            ps.setString(2, argument.toString());
+        });
+    }
+
+    private void deleteRoles(User user) {
+        jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", user.getId());
     }
 }

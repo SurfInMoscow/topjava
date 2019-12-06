@@ -34,7 +34,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Override
     @Test
     public void save() throws Exception {
-        User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.ROLE_USER));
+        User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Set.of(Role.ROLE_USER, Role.ROLE_ADMIN));
         User created = userService.create(newUser);
         newUser.setId(created.getId());
         assertMatch(userService.getAll(), ADMIN, newUser, USER);
@@ -93,6 +93,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         User updated = new User(USER);
         updated.setName("UpdatedName");
         updated.setCaloriesPerDay(330);
+        updated.getRoles().add(Role.ROLE_ADMIN);
         userService.update(updated);
         assertMatch(userService.get(USER_ID), updated);
     }
