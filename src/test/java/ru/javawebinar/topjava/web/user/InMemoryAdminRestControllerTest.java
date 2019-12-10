@@ -1,18 +1,18 @@
 package ru.javawebinar.topjava.web.user;
 
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.javawebinar.topjava.UserTestData;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepositoryImpl;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.util.Arrays;
-import java.util.Collection;
 
-import static ru.javawebinar.topjava.UserTestData.ADMIN;
+import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 public class InMemoryAdminRestControllerTest {
     private static ConfigurableApplicationContext appCtx;
@@ -27,7 +27,9 @@ public class InMemoryAdminRestControllerTest {
 
     @AfterClass
     public static void afterClass() {
-        appCtx.close();
+//        May cause during JUnit "Cache is not alive (STATUS_SHUTDOWN)" as JUnit share Spring context for speed
+//        http://stackoverflow.com/questions/16281802/ehcache-shutdown-causing-an-exception-while-running-test-suite
+//        appCtx.close();
     }
 
     @Before
@@ -37,12 +39,10 @@ public class InMemoryAdminRestControllerTest {
         repository.init();
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void delete() throws Exception {
-        controller.delete(UserTestData.USER_ID);
-        Collection<User> users = controller.getAll();
-        Assert.assertEquals(1, users.size());
-        Assert.assertEquals(ADMIN, users.iterator().next());
+        controller.delete(USER_ID);
+        controller.get(USER_ID);
     }
 
     @Test(expected = NotFoundException.class)
