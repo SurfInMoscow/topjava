@@ -21,7 +21,7 @@ public class JdbcUserSetExtractor implements ResultSetExtractor<List<User>> {
             String name = rs.getString("name");
             String usr_email = rs.getString("email");
             String password = rs.getString("password");
-            Date registered = TimeUtil.parseLocalDateTimeToDate(rs.getString("registered").replace(' ', 'T').substring(0, 19));
+            Date registered = TimeUtil.parseLocalDateTimeToDate(rs.getString("registered").replace(' ', 'T').substring(0, 16));
             Boolean enabled = rs.getBoolean("enabled");
             int calories = Integer.parseInt(rs.getString("calories_per_day"));
             int user_id = Integer.parseInt(rs.getString("user_id"));

@@ -19,7 +19,7 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <form method="post" action="meals?action=filter">
+    <form method="get" action="meals/filter">
         <dl>
             <dt>From Date:</dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -55,13 +55,13 @@
                     <td>${meals.calories}</td>
                     <td>${meals.excess}</td>
                 <td>${meals.id}
-                    <a href="meals?id=${meals.id}&action=edit"><input type="button" value="Редактировать"></a>
-                    <a href="meals?id=${meals.id}&action=delete"><input type="button" value="Удалить"></a>
+                    <a href="meals/editMeal?id=${meals.id}"><input type="button" value="Редактировать"></a>
+                    <a href="meals/delete?id=${meals.id}"><input type="button" value="Удалить"></a>
                 </td>
             </tr>
         </c:forEach>
     </table>
-    <p><a href="meals?action=new"><input type="button" value="Добавить"></a></p>
+    <p><a href="meals/createMeal"><input type="button" value="Добавить"></a></p>
 </section>
 </body>
 </html>
