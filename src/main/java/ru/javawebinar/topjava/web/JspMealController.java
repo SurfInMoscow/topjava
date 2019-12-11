@@ -69,7 +69,7 @@ public class JspMealController {
             m.setCalories(Integer.parseInt(calories));
             mealRestController.update(m);
         }
-        return "redirect:meals";
+        return "redirect:/meals";
     }
 
     private int getId(HttpServletRequest request) {
