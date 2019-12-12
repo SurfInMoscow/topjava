@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.TimeUtil;
-import ru.javawebinar.topjava.web.meal.MealRestController;
+import ru.javawebinar.topjava.web.meal.AbstractMealController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -17,23 +16,17 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/meals")
-public class JspMealController {
-    private final MealRestController mealRestController;
-
-    @Autowired
-    public JspMealController(MealRestController mealRestController) {
-        this.mealRestController = mealRestController;
-    }
+public class JspMealController extends AbstractMealController {
 
     @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
-        mealRestController.delete(getId(request));
+        super.delete(getId(request));
         return "redirect:/meals";
     }
 
     @GetMapping("/editMeal")
     public String editMeal(HttpServletRequest request, Model model) {
-        model.addAttribute("meals", mealRestController.get(getId(request)));
+        model.addAttribute("meals", super.get(getId(request)));
         return "editMeal";
     }
 
@@ -48,7 +41,7 @@ public class JspMealController {
         LocalDate endDate = TimeUtil.parseLocalDate(request.getParameter("endDate"));
         LocalTime startTime = TimeUtil.parseLocalTime(request.getParameter("startTime"));
         LocalTime endTime = TimeUtil.parseLocalTime(request.getParameter("endTime"));
-        model.addAttribute("meals", mealRestController.getBetween(startDate, startTime, endDate, endTime));
+        model.addAttribute("meals", super.getBetween(startDate, startTime, endDate, endTime));
         return "meals";
     }
 
@@ -61,13 +54,13 @@ public class JspMealController {
         Meal m;
         if (id == null) {
             m = new Meal(TimeUtil.stringToLocalDateTime(dateTime), description, Integer.parseInt(calories));
-            mealRestController.save(m);
+            super.save(m);
         } else {
-            m = mealRestController.get(getId(request));
+            m = super.get(getId(request));
             m.setDateTime(TimeUtil.stringToLocalDateTime(dateTime));
             m.setDescription(description);
             m.setCalories(Integer.parseInt(calories));
-            mealRestController.update(m);
+            super.update(m);
         }
         return "redirect:/meals";
     }
