@@ -78,7 +78,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query("SELECT * FROM users u LEFT OUTER JOIN user_roles ur on u.id = ur.user_id ORDER BY name, email", jdbcUserSetExtractor);
+        //return jdbcTemplate.query("SELECT * FROM users u LEFT OUTER JOIN user_roles ur on u.id = ur.user_id ORDER BY name, email", jdbcUserSetExtractor);
+        return jdbcTemplate.query("SELECT * FROM users LEFT JOIN user_roles on users.id = user_roles.user_id ORDER BY users.name, users.email", new JdbcUserOneToManyResultSetExtractor());
     }
 
     private void batchUpdateRoles(User user) {
