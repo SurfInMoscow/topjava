@@ -1,6 +1,9 @@
 package ru.javawebinar.topjava.web.user;
 
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.UserTestData;
@@ -11,24 +14,27 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class InMemoryAdminRestControllerTest {
 
     private static ConfigurableApplicationContext appCtx;
     private static AdminRestController controller;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-inmemory.xml");
         System.out.println("\n" + Arrays.toString(appCtx.getBeanDefinitionNames()) + "\n");
         controller = appCtx.getBean(AdminRestController.class);
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         appCtx.close();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         InMemoryUserRepositoryImpl repository = appCtx.getBean(InMemoryUserRepositoryImpl.class);
         repository.init();
@@ -38,12 +44,12 @@ public class InMemoryAdminRestControllerTest {
     public void delete() throws Exception {
         controller.delete(UserTestData.USER_ID);
         Collection<User> users = controller.getAll();
-        Assert.assertEquals(users.size(), 1);
-        Assert.assertEquals(users.iterator().next(), UserTestData.ADMIN);
+        assertEquals(users.size(), 1);
+        assertEquals(users.iterator().next(), UserTestData.ADMIN);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNotFound() throws Exception {
-      controller.delete(5);
+        assertThrows(NotFoundException.class, () -> controller.delete(5));
     }
 }

@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
@@ -12,8 +12,12 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 public abstract class AbstractUserServiceTest extends AbstractServiceTest {
@@ -26,7 +30,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     protected Environment environment;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         cacheManager.getCache("users").clear();
     }
@@ -42,8 +46,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void duplicateMailCreate() throws Exception {
-        expectedException.expect(DataAccessException.class);
-        userService.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
+        assertThrows(DataAccessException.class, () ->
+                userService.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER)));
     }
 
     @Override
@@ -56,8 +60,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Override
     @Test
     public void deleteNotFound() throws Exception {
-        expectedException.expect(NotFoundException.class);
-        userService.delete(1);
+        assertThrows(NotFoundException.class, () ->
+                userService.delete(1));
     }
 
     @Override
@@ -70,8 +74,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Override
     @Test
     public void getNotFound() throws Exception {
-        expectedException.expect(NotFoundException.class);
-        userService.get(1);
+        assertThrows(NotFoundException.class, () ->
+                userService.get(1));
     }
 
     @Test
@@ -100,7 +104,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void createWithException() throws Exception {
-        Assume.assumeFalse(isJdbcProfile());
+        Assumptions.assumeFalse(isJdbcProfile());
         validateRootCause(() -> userService.create(new User(null, "  ", "mail@yandex.ru", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> userService.create(new User(null, "User", "  ", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> userService.create(new User(null, "User", "mail@yandex.ru", "  ", Role.ROLE_USER)), ConstraintViolationException.class);

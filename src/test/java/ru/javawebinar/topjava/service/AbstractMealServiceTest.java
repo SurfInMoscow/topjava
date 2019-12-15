@@ -1,9 +1,8 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
@@ -18,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.time.LocalDateTime.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
@@ -32,7 +33,7 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     @Autowired
     protected Environment environment;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Objects.requireNonNull(cacheManager.getCache("meals")).clear();
     }
@@ -56,23 +57,21 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     @Override
     @Test
     public void deleteNotFound() throws Exception {
-        expectedException.expect(NotFoundException.class);
-        mealService.delete(0, USER_MEAL1_ID - 1);
+        assertThrows(NotFoundException.class, () -> mealService.delete(0, USER_MEAL1_ID - 1));
     }
 
     @Override
     @Test
     public void get() throws Exception {
         Meal meal = mealService.get(100000, USER_MEAL3_ID);
-        Assert.assertEquals(meal, userSupper);
+        assertEquals(meal, userSupper);
         //assertMatch(new Meal(meal.getUser().getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories()), userSupper);
     }
 
     @Override
     @Test
     public void getNotFound() throws Exception {
-        expectedException.expect(ru.javawebinar.topjava.util.exception.NotFoundException.class);
-        mealService.get(0, 1);
+        assertThrows(ru.javawebinar.topjava.util.exception.NotFoundException.class, () -> mealService.get(0, 1));
     }
 
     @Override
@@ -87,10 +86,11 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Test
     public void updateNotFound() throws Exception {
-        expectedException.expect(Exception.class);
-        Meal updated = new Meal(LocalDateTime.of(2019, 5, 4, 15, 0), "чай", 100);
-        updated.setId(USER_ID);
-        mealService.update(ADMIN_ID, updated);
+        assertThrows(Exception.class, () -> {
+            Meal updated = new Meal(LocalDateTime.of(2019, 5, 4, 15, 0), "чай", 100);
+            updated.setId(USER_ID);
+            mealService.update(ADMIN_ID, updated);
+        });
     }
 
     @Override
@@ -104,12 +104,12 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     public void getBetween() {
         List<Meal> mealsBetween = mealService.getBetweenDateTimes(LocalDateTime.of(2019, 5, 4, 9, 0),
                 LocalDateTime.of(2019, 5, 4, 14, 0), 100000);
-        Assert.assertEquals(2, mealsBetween.size());
+        assertEquals(2, mealsBetween.size());
     }
 
     @Test
     public void createWithException() throws Exception {
-        Assume.assumeFalse(isJdbcProfile());
+        Assumptions.assumeFalse(isJdbcProfile());
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300)), ConstraintViolationException.class);
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9)), ConstraintViolationException.class);
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001)), ConstraintViolationException.class);
