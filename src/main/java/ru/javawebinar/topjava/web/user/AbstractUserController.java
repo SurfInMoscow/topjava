@@ -9,7 +9,6 @@ import ru.javawebinar.topjava.service.UserService;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -31,5 +30,20 @@ public abstract class AbstractUserController {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);
+    }
+
+    public User create(User user) {
+        log.info("create {}", user);
+        return service.create(user);
+    }
+
+    public User getByMail(String email) {
+        log.info("get by email={}", email);
+        return service.getByEmail(email);
+    }
+
+    public List<User> getAll() {
+        log.info("get all users");
+        return service.getAll();
     }
 }
