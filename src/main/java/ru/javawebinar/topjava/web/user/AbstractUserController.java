@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 
+import java.util.List;
+
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 
 public class AbstractUserController {
@@ -29,5 +31,20 @@ public class AbstractUserController {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);
+    }
+
+    public User create(User user) {
+        log.info("create {}", user);
+        return service.create(user);
+    }
+
+    public User getByEmail(String email) {
+        log.info("get by email={}", email);
+        return service.getByEmail(email);
+    }
+
+    public List<User> getAll() {
+        log.info("get all users");
+        return service.getAll();
     }
 }
