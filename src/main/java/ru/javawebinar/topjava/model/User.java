@@ -58,7 +58,7 @@ public class User extends AbstractNamedEntity {
     @BatchSize(size = 200)
     private Set<Role> roles;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
                cascade = CascadeType.PERSIST)
     @OrderBy("dateTime DESC")
