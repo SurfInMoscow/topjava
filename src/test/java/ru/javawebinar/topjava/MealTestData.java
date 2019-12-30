@@ -21,6 +21,8 @@ public class MealTestData {
     public static final Meal userSupper = new Meal(USER_MEAL3_ID, LocalDateTime.of(2019, 5, 4, 18, 0), "ужин", 800);
     public static final Meal adminLunch = new Meal(ADMIN_MEAL1_ID, LocalDateTime.of(2019, 5, 4, 15, 0), "ланч", 1000);
 
+    public static final List<Meal> MEALS = List.of(userSupper, userDinner, userBreakfast, adminLunch);
+
     public static void assertMatch(Meal actual, Meal expected) {
         assertThat(actual).isEqualToComparingFieldByField(expected);
     }
