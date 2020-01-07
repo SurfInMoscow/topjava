@@ -1,0 +1,51 @@
+### List<User> getAll()
+GET http://localhost:8080/topjava/rest/admin/users
+Accept: application/json
+
+### User getByMail(@RequestParam String email)
+GET http://localhost:8080/topjava/rest/admin/users/by?email=user@yandex.ru
+Accept: application/json
+
+### User get(@PathVariable int id)
+GET http://localhost:8080/topjava/rest/admin/users/100000
+Accept: application/json
+
+### ResponseEntity<User> createWithLocation(@RequestBody User user)
+POST http://localhost:8080/topjava/rest/admin/users
+Content-Type: application/json
+
+{
+  "name": "NewUser",
+  "email": "newuser@yandex.ru",
+  "password": "superpassword",
+  "enabled": true,
+  "registered": "2020-01-07T17:43:44.784+0000",
+  "roles": [
+    "ROLE_USER"
+  ],
+  "meals": null,
+  "caloriesPerDay": 1500
+}
+
+### void delete(@PathVariable int id)
+DELETE http://localhost:8080/topjava/rest/admin/users/100006
+Accept: application/json
+
+### void update(@RequestBody User user, @PathVariable int id)
+PUT http://localhost:8080/topjava/rest/admin/users/100000
+Content-Type: application/json
+
+{"id": 100000,
+  "name": "User",
+  "email": "user123@yandex.ru",
+  "password": "password",
+  "enabled": true,
+  "registered": "2020-01-07T17:43:44.784+0000",
+  "roles": [
+    "ROLE_USER"
+  ],
+  "meals": null,
+  "caloriesPerDay": 1500
+}
+
+###

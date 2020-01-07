@@ -1,0 +1,31 @@
+#Update current user profile
+PUT http://localhost:8080/topjava/rest/profile
+Content-Type: application/json
+
+{
+  "id": 100000,
+  "name": "User",
+  "email": "user123@yandex.ru",
+  "password": "password",
+  "enabled": true,
+  "registered": "2020-01-07T16:50:35.210+0000",
+  "roles": [
+    "ROLE_USER"
+  ],
+  "meals": null,
+  "caloriesPerDay": 1500
+}
+
+###Get cyrillic text
+GET http://localhost:8080/topjava/rest/profile/text
+Accept: application/json
+
+###Get current active profile
+GET http://localhost:8080/topjava/rest/profile
+Accept: application/json
+
+###Delete current user profile
+DELETE http://localhost:8080/topjava/rest/profile
+Content-Type: application/json
+
+###
