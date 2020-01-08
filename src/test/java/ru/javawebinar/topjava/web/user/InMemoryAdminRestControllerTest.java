@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class InMemoryAdminRestControllerTest {
 
-    private static ConfigurableApplicationContext appCtx;
+/*    private static ConfigurableApplicationContext appCtx;
     private static AdminRestController controller;
 
     @BeforeAll
@@ -51,5 +51,5 @@ public class InMemoryAdminRestControllerTest {
     @Test
     public void deleteNotFound() throws Exception {
         assertThrows(NotFoundException.class, () -> controller.delete(5));
-    }
+    }*/
 }

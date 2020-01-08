@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringJUnitConfig(locations = {"classpath:spring/spring-inmemory.xml", "classpath:spring/spring-app.xml"})
 public class InMemoryAdminRestControllerSpringTest {
 
-    @Autowired
+  /*  @Autowired
     private AdminRestController controller;
 
     @Autowired
@@ -39,5 +39,5 @@ public class InMemoryAdminRestControllerSpringTest {
     @Test
     public void deleteNotFound() throws Exception {
         assertThrows(NotFoundException.class, () -> controller.delete(5));
-    }
+    }*/
 }
