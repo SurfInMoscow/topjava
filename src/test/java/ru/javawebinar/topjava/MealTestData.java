@@ -38,7 +38,7 @@ public class MealTestData {
         //assertThat(actual).isEqualTo(expected);
     }
 
-    public static ResultMatcher contentJson(Meal... expected) {
+    public static ResultMatcher contentJsonArr(Meal... expected) {
         return result -> assertMatch(readListFromJsonMvcResult(result, Meal.class), List.of(expected));
     }
 
@@ -51,5 +51,12 @@ public class MealTestData {
         updated.setUser(UserTestData.USER);
         updated.setCalories(1000);
         return updated;
+    }
+
+    public static Meal getNew() {
+        Meal created = new Meal(userBreakfast);
+        created.setUser(UserTestData.USER);
+        created.setDescription("created for T&T");
+        return created;
     }
 }

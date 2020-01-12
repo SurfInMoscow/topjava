@@ -1,0 +1,62 @@
+### void getAll()
+GET http://localhost:8080/topjava/rest/meal
+Accept: application/json
+
+### void get()
+GET http://localhost:8080/topjava/rest/meal/100004
+Accept: application/json
+
+### void getBetween()
+GET http://localhost:8080/topjava/rest/meal/between?startDate=2019-05-04&startTime=17:30:00&endDate=2019-05-04&endTime=18:01:01
+Accept: application/json
+
+###  void update()
+PUT http://localhost:8080/topjava/rest/meal/100004
+Content-Type: application/json
+
+{
+  "id": 100004,
+  "dateTime": "2019-05-04T18:00:00",
+  "description": "updated",
+  "calories": 1000,
+  "user": {
+    "id": 100000,
+    "name": "User",
+    "email": "user@yandex.ru",
+    "password": "password",
+    "enabled": true,
+    "registered": "2020-01-12T15:31:35.480+0000",
+    "roles": [
+      "ROLE_USER"
+    ],
+    "meals": null,
+    "caloriesPerDay": 2000
+  }
+}
+
+### void createWithLocation()
+POST http://localhost:8080/topjava/rest/meal
+Content-Type: application/json
+
+{
+  "dateTime": "2020-01-04T18:00:00",
+  "description": "Created",
+  "calories": 800,
+  "user": {
+    "id": 100000,
+    "name": "User",
+    "email": "user@yandex.ru",
+    "password": "password",
+    "enabled": true,
+    "registered": "2020-01-12T15:31:35.480+0000",
+    "roles": [
+      "ROLE_USER"
+    ],
+    "meals": null,
+    "caloriesPerDay": 2000
+  }
+}
+
+### void delete()
+DELETE http://localhost:8080/topjava/rest/meal/100004
+Accept: application/json
