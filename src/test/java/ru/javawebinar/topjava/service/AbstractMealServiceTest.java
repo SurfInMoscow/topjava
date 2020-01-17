@@ -108,6 +108,11 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    void getBetweenWithNullDates() throws Exception {
+        assertMatch(mealService.getBetweenDates(null, null, USER_ID), MEALS);
+    }
+
+    @Test
     public void createWithException() throws Exception {
         Assumptions.assumeFalse(isJdbcProfile());
         validateRootCause(() -> mealService.save(USER_ID, new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300)), ConstraintViolationException.class);

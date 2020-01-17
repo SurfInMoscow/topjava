@@ -10,8 +10,10 @@ import java.util.Date;
 public class TimeUtil {
 
     // DataBase doesn't support LocalDate.MIN/MAX
-    private static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
-    private static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
+    /*private static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
+    private static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);*/
+    private static final LocalDateTime MIN_DATE = LocalDateTime.of(1, 1, 1, 0, 0);
+    private static final LocalDateTime MAX_DATE = LocalDateTime.of(3000, 1, 1, 0, 0);
 
     private TimeUtil() {
     }
@@ -24,8 +26,8 @@ public class TimeUtil {
         return adjustDateTime(localDate, MAX_DATE, LocalTime.MAX);
     }
 
-    private static LocalDateTime adjustDateTime(LocalDate localDate, LocalDate defaultDate, LocalTime adjustTime) {
-        return LocalDateTime.of(localDate != null ? localDate : defaultDate, adjustTime);
+    private static LocalDateTime adjustDateTime(LocalDate localDate, LocalDateTime defaultDate, LocalTime adjustTime) {
+        return LocalDateTime.of(localDate != null ? localDate : defaultDate.toLocalDate(), adjustTime);
     }
 
     public static boolean isBetween(LocalTime lt, LocalTime startTime, LocalTime endTime) {
