@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.to;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Objects;
 
 import java.time.LocalDateTime;
 
@@ -42,6 +43,23 @@ public class MealTo {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MealTo mealTo = (MealTo) o;
+        return calories == mealTo.calories &&
+                excess == mealTo.excess &&
+                Objects.equal(dateTime, mealTo.dateTime) &&
+                Objects.equal(description, mealTo.description) &&
+                Objects.equal(id, mealTo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(dateTime, description, calories, excess, id);
     }
 
     @Override
