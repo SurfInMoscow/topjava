@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
@@ -32,12 +33,16 @@ public class MealRestController extends AbstractMealController {
         return super.get(id);
     }
 
-    @GetMapping("/between")
+    @GetMapping("/filter")
     @Override
-    public List<MealTo> getBetween(@RequestParam(defaultValue = "2000-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+    public List<MealTo> getBetween(/*@RequestParam(defaultValue = "2000-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                    @RequestParam(defaultValue = "00:00") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
                                    @RequestParam(defaultValue = "3000-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                   @RequestParam(defaultValue = "23:59:59.999999999") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime) {
+                                   @RequestParam(defaultValue = "23:59:59.999999999") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime*/
+            @RequestParam @Nullable LocalDate startDate,
+            @RequestParam @Nullable LocalTime startTime,
+            @RequestParam @Nullable LocalDate endDate,
+            @RequestParam @Nullable LocalTime endTime) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 

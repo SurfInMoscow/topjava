@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.to;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 
+import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 
 public class MealTo {
@@ -17,6 +18,7 @@ public class MealTo {
 
     private Integer id;
 
+    @ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
     public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess, Integer id) {
         this.dateTime = dateTime;
         this.description = description;

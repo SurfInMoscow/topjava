@@ -7,7 +7,11 @@ GET http://localhost:8080/topjava/rest/meal/100004
 Accept: application/json
 
 ### void getBetween()
-GET http://localhost:8080/topjava/rest/meal/between?startDate=2019-05-04&startTime=17:30:00&endDate=2019-05-04&endTime=18:01:01
+GET http://localhost:8080/topjava/rest/meal/filter?startDate=2019-05-04&startTime=17:30:00&endDate=2019-05-04&endTime=18:01:01
+Accept: application/json
+
+### void getBetween() with null parameters
+GET http://localhost:8080/topjava/rest/meal/filter?startDate=
 Accept: application/json
 
 ###  void update()
