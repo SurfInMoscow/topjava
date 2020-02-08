@@ -3,7 +3,7 @@
 $(function () {
     makeEditable({
             ajaxUrl: "ajax/meal/",
-            datatableApi: $("#datatableMeals").DataTable({
+            datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
                 "columns": [
