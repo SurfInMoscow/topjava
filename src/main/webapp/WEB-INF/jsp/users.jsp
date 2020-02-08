@@ -25,6 +25,8 @@
                 <th><spring:message code="user.roles"/></th>
                 <th><spring:message code="user.active"/></th>
                 <th><spring:message code="user.registered"/></th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <c:forEach items="${users}" var="user">

@@ -33,7 +33,11 @@
         <button type="submit"><spring:message code="meal.filter"/></button>
     </form>
     <div class="container" style="background-color: #dad9e1;">
-        <table class="table table-striped" id="datatable">
+        <button class="btn btn-primary" onclick="add()">
+            <span class="fa fa-plus"></span>
+            <spring:message code="meal.add"/>
+        </button>
+        <table class="table table-striped id="datatable">
         <tr>
             <th><spring:message code="meal.dateTime"/></th>
             <th><spring:message code="meal.description"/></th>
@@ -45,7 +49,6 @@
             <jsp:useBean id="meals" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meals.excess ? 'excess' : 'normal'}">
                 <td>${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
-                    <%--<td><%=meals.getDateTime().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))%></td>--%>
                 <td>${meals.description}</td>
                 <td>${meals.calories}</td>
                 <td>${meals.excess}</td>
@@ -56,12 +59,9 @@
             </tr>
         </c:forEach>
         </table>
-        <button class="btn btn-primary" onclick="add()">
-            <span class="fa fa-plus"></span>
-            <spring:message code="meal.add"/>
-        </button>
     </div>
 </div>
+
 <div class="modal fade" tabindex="-1" id="editRow">
     <div class="modal-dialog">
         <div class="modal-content">
