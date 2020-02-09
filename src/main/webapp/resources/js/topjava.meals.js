@@ -1,4 +1,3 @@
-
 // $(document).ready(function () {
 $(function () {
     makeEditable({
@@ -8,7 +7,7 @@ $(function () {
                 "info": true,
                 "columns": [
                     {
-                        "data": "dateTime"
+                        "data": "datetime"
                     },
                     {
                         "data": "description"
@@ -41,3 +40,14 @@ $(function () {
         }
     );
 });
+
+function filterMeals() {
+    $.ajax({
+        url: "ajax/meal/filter?startDate=" + $(this).attr("startDate")
+            + "&startTime=" + $(this).attr("startTime")
+            + "&endDate=" + $(this).attr("endDate")
+            + "&endTime=" + $(this).attr("endTime"),
+        type: "GET"
+    });
+    updateTable()
+}

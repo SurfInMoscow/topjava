@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@taglib uri="http://pavel.vorobev.com" prefix="f" %>
@@ -37,25 +37,28 @@
             <span class="fa fa-plus"></span>
             <spring:message code="meal.add"/>
         </button>
-        <table class="table table-striped id="datatable">
+        <table class="table table-striped" id="datatable">
+        <thead>
         <tr>
             <th><spring:message code="meal.dateTime"/></th>
             <th><spring:message code="meal.description"/></th>
             <th><spring:message code="meal.calories"/></th>
             <th><spring:message code="meal.excess"/></th>
             <th><spring:message code="meal.uniqueID"/></th>
+            <th></th>
+            <th></th>
         </tr>
+        </thead>
         <c:forEach var="meals" items="${meals}">
-            <jsp:useBean id="meals" type="ru.javawebinar.topjava.to.MealTo"/>
-            <tr class="${meals.excess ? 'excess' : 'normal'}">
-                <td>${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
-                <td>${meals.description}</td>
-                <td>${meals.calories}</td>
-                <td>${meals.excess}</td>
-                <td>${meals.id}
-                    <a href="meals/editMeal?id=${meals.id}"><input type="button" value="<spring:message code="common.edit"/>"></a>
-                    <a href="meals/delete?id=${meals.id}"><input type="button" value="<spring:message code="common.delete"/>"></a>
-                </td>
+            <jsp:useBean id="meals" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
+            <tr>
+                <td class="${meals.excess ? 'excess' : 'normal'}">${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
+                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.description}</td>
+                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.calories}</td>
+                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.excess}</td>
+                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.id}</td>
+                <td><a href="meals/editMeal?id=${meals.id}"><span class="fa fa-pencil"></span></a></td>
+                <td><a class="delete" id="${meals.id}"><span class="fa fa-remove"></span></a></td>
             </tr>
         </c:forEach>
         </table>
