@@ -47,4 +47,9 @@ public abstract class AbstractUserController {
         log.info("get all users");
         return service.getAll();
     }
+
+    public void enable(int id, boolean enabled) {
+        log.info(enabled ? "enable {}" : "disable {}", id);
+        service.enable(id, enabled);
+    }
 }
