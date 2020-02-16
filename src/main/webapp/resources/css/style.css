@@ -1,20 +1,3 @@
-th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 15px;
-    text-align: left;
-}
-
-/*header, footer {
-    background: none repeat scroll 0 0 #b9fddc;
-    color: #28282c;
-    font-size: 20px;
-    padding: 5px 20px;
-    margin: 6px 0;
-}*/
-
 .normal {
     color: green;
 }

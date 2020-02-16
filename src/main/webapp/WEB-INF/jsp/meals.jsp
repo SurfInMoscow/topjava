@@ -13,26 +13,40 @@
 <script type="text/javascript" src="resources/js/topjava.meals.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <div class="jumbotron pt-4" style="background-color: #dad9e1;">
-    <form method="get" action="meals/filter">
-        <dl>
-            <dt><spring:message code="meal.startDate"/></dt>
-            <dd><input type="date" id="startDate" name="startDate" value="${param.startDate}"></dd>
-        </dl>
-        <dl>
-            <dt><spring:message code="meal.endDate"/></dt>
-            <dd><input type="date" id="endDate" name="endDate" value="${param.endDate}"></dd>
-        </dl>
-        <dl>
-            <dt><spring:message code="meal.fromTime"/></dt>
-            <dd><input type="time" id="startTime" name="startTime" value="${param.startTime}"></dd>
-        </dl>
-        <dl>
-            <dt><spring:message code="meal.toTime"/></dt>
-            <dd><input type="time" id="endTime" name="endTime" value="${param.endTime}"></dd>
-        </dl>
-        <button type="submit"><spring:message code="meal.filter"/></button>
-    </form>
     <div class="container" style="background-color: #dad9e1;">
+        <h3 class="text-center"><spring:message code="meal.title"/></h3>
+        <%--https://getbootstrap.com/docs/4.0/components/card/--%>
+        <div class="card border-dark">
+            <div class="card-body pb-0">
+                <form id="filter">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="startDate"><spring:message code="meal.startDate"/></label>
+                            <input class="form-control" type="date" name="startDate" id="startDate">
+                        </div>
+                        <div class="col-3">
+                            <label for="endDate"><spring:message code="meal.endDate"/></label>
+                            <input class="form-control" type="date" name="endDate" id="endDate">
+                        </div>
+                        <div class="offset-2 col-2">
+                            <label for="startTime"><spring:message code="meal.fromTime"/></label>
+                            <input class="form-control" type="time" name="startTime" id="startTime">
+                        </div>
+                        <div class="col-2">
+                            <label for="endTime"><spring:message code="meal.toTime"/></label>
+                            <input class="form-control" type="time" name="endTime" id="endTime">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-primary" onclick="updateFilteredTable()">
+                    <span class="fa fa-filter"></span>
+                    <spring:message code="meal.filter"/>
+                </button>
+            </div>
+        </div>
+        <br/>
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus"></span>
             <spring:message code="meal.add"/>
@@ -58,7 +72,7 @@
                 <td class="${meals.excess ? 'excess' : 'normal'}">${meals.excess}</td>
                 <td class="${meals.excess ? 'excess' : 'normal'}">${meals.id}</td>
                 <td><a href="meals/editMeal?id=${meals.id}"><span class="fa fa-pencil"></span></a></td>
-                <td><a class="delete" id="${meals.id}"><span class="fa fa-remove"></span></a></td>
+                <td><a onclick="deleteRow(${meals.id})"><span class="fa fa-remove"></span></a></td>
             </tr>
         </c:forEach>
         </table>

@@ -1,3 +1,11 @@
+function updateFilteredTable() {
+    $.ajax({
+        type: "GET",
+        url: "ajax/meal/filter",
+        data: $("#filter").serialize()
+    }).done(updateTableByData);
+}
+
 // $(document).ready(function () {
 $(function () {
     makeEditable({
@@ -36,52 +44,7 @@ $(function () {
                         "asc"
                     ]
                 ]
-            })
-        }
-    );
-    /*$("#filterMeals").click(function () {
-        $.ajax({
-            url: "ajax/meal/filter",
-            type: "GET",
-            data: {
-                startDate: startDate,
-                startTime: startTime,
-                endDate: endDate,
-                endTime: endTime
-            }
+            }),
+            updateTable: updateFilteredTable
         });
-    })*/
 });
-
-/*$(document).ready(
-    function filterMeals() {
-        $.ajax({
-            type: "GET",
-            url: "ajax/meal/filter?startDate=" + $(this).attr("startDate")
-                + "&startTime=" + $(this).attr("startTime")
-                + "&endDate=" + $(this).attr("endDate")
-                + "&endTime=" + $(this).attr("endTime")
-        });
-        updateTable()
-    }
-)*/
-
-/*function filterMeals() {
-    $.ajax({
-        type: "GET",
-        url: "ajax/meal/filter?startDate=" + $(this).attr("startDate")
-            + "&startTime=" + $(this).attr("startTime")
-            + "&endDate=" + $(this).attr("endDate")
-            + "&endTime=" + $(this).attr("endTime")
-    });
-    updateTable()
-}*/
-
-/*
-function filterMeals() {
-    $.ajax({
-        type: "GET",
-        url: "ajax/meal/filter" + $(this).attr("startDate") + $(this).attr("startTime") + $(this).attr("endDate") + $(this).attr("endTime")
-    });
-    updateTable()
-}*/
