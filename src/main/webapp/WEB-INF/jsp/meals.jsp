@@ -57,20 +57,16 @@
             <th><spring:message code="meal.dateTime"/></th>
             <th><spring:message code="meal.description"/></th>
             <th><spring:message code="meal.calories"/></th>
-            <th><spring:message code="meal.excess"/></th>
-            <th><spring:message code="meal.uniqueID"/></th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <c:forEach var="meals" items="${meals}">
             <jsp:useBean id="meals" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
-            <tr>
-                <td class="${meals.excess ? 'excess' : 'normal'}">${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
-                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.description}</td>
-                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.calories}</td>
-                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.excess}</td>
-                <td class="${meals.excess ? 'excess' : 'normal'}">${meals.id}</td>
+            <tr data-mealExcess="${meals.excess}">
+                <td>${f:formatLocalDateTime(meals.dateTime, "yyyy-MM-dd HH:mm")}</td>
+                <td>${meals.description}</td>
+                <td>${meals.calories}</td>
                 <td><a href="meals/editMeal?id=${meals.id}"><span class="fa fa-pencil"></span></a></td>
                 <td><a onclick="deleteRow(${meals.id})"><span class="fa fa-remove"></span></a></td>
             </tr>

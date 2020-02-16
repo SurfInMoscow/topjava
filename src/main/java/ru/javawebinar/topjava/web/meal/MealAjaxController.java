@@ -40,10 +40,10 @@ public class MealAjaxController extends AbstractMealController {
 
     @GetMapping("/filter")
     @Override
-    public List<MealTo> getBetween(@RequestParam LocalDate startDate,
-                                   @RequestParam LocalTime startTime,
-                                   @RequestParam LocalDate endDate,
-                                   @RequestParam LocalTime endTime) {
+    public List<MealTo> getBetween(@RequestParam(value = "startDate", required = false) LocalDate startDate,
+                                   @RequestParam(value = "startTime", required = false) LocalTime startTime,
+                                   @RequestParam(value = "endDate", required = false) LocalDate endDate,
+                                   @RequestParam(value = "endTime", required = false) LocalTime endTime) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 }

@@ -1,8 +1,7 @@
-.normal {
+tr[data-mealExcess="false"] {
     color: green;
 }
-
-.excess {
+tr[data-mealExcess="true"] {
     color: red;
 }
 

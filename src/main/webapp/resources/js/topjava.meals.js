@@ -24,12 +24,6 @@ $(function () {
                         "data": "calories"
                     },
                     {
-                        "data": "excess"
-                    },
-                    {
-                        "data": "id"
-                    },
-                    {
                         "defaultContent": "Edit",
                         "orderable": false
                     },
@@ -41,7 +35,7 @@ $(function () {
                 "order": [
                     [
                         0,
-                        "asc"
+                        "desc"
                     ]
                 ]
             }),
