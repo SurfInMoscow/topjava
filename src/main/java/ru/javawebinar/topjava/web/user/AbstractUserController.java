@@ -44,6 +44,12 @@ public abstract class AbstractUserController {
         return service.create(user);
     }
 
+    public void update(UserTo userTo, int id) {
+        log.info("update {} with id={}", userTo, id);
+        assureIdConsistent(userTo, id);
+        service.update(userTo);
+    }
+
     public User getByMail(String email) {
         log.info("get by email={}", email);
         return service.getByEmail(email);
