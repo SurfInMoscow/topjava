@@ -35,6 +35,12 @@ public abstract class AbstractUserController {
         service.update(user);
     }
 
+    public void update(UserTo userTo, int id) {
+        log.info("update {} with id={}", userTo, id);
+        assureIdConsistent(userTo, id);
+        service.update(userTo);
+    }
+
     public User create(User user) {
         log.info("create {}", user);
         return service.create(user);

@@ -6,7 +6,7 @@ import com.google.common.base.Objects;
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 
-public class MealTo {
+public class MealTo extends BaseTo {
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -16,15 +16,13 @@ public class MealTo {
     @JsonIgnore
     private final boolean excess;
 
-    private Integer id;
-
     @ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
     public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess, Integer id) {
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
         this.excess = excess;
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -41,10 +39,6 @@ public class MealTo {
 
     public boolean isExcess() {
         return excess;
-    }
-
-    public int getId() {
-        return id;
     }
 
     @Override
