@@ -35,16 +35,6 @@ public class AdminUIController extends AbstractUserController {
         super.delete(id);
     }
 
-    /*@PostMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(UserTo userTo) {
-        if (userTo.isNew()) {
-            super.create(userTo);
-        } else {
-            super.update(userTo, userTo.id());
-        }
-    }*/
-
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {
         if (result.hasErrors()) {

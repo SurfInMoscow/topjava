@@ -12,13 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class RootController {
-    private final UserService service;
 
     private final MealRestController mealRestController;
 
     @Autowired
-    public RootController(UserService service, MealRestController mealRestController) {
-        this.service = service;
+    public RootController(MealRestController mealRestController) {
         this.mealRestController = mealRestController;
     }
 
@@ -28,8 +26,7 @@ public class RootController {
     }
 
     @GetMapping("/users")
-    public String getUsers(Model model) {
-        model.addAttribute("users", service.getAll());
+    public String getUsers() {
         return "users";
     }
 
