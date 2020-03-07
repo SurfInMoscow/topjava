@@ -10,11 +10,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.javawebinar.topjava.MealTestData.*;
+import static ru.javawebinar.topjava.TestUtil.userAuth;
+import static ru.javawebinar.topjava.UserTestData.ADMIN;
 
 public class RootControllerTest extends AbstractControllerTest {
     @Test
     public void getUsers() throws Exception {
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get("/users").with(userAuth(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("/WEB-INF/jsp/users.jsp"))
@@ -25,6 +27,14 @@ public class RootControllerTest extends AbstractControllerTest {
                                 hasProperty("name", is(USER.getName()))
                         )
                 )))*/;
+    }
+
+    @Test
+    void unAuth() throws Exception {
+        mockMvc.perform(get("/users"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/login"));
     }
 
     @Test
