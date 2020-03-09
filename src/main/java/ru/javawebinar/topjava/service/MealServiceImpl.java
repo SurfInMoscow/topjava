@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -48,6 +50,12 @@ public class MealServiceImpl implements MealService {
     public void update(int usrId, Meal meal) {
         Assert.notNull(meal, "meal must not be null");
         checkNotFoundWithId(repository.save(usrId, meal), meal.getId());
+    }
+
+    @Override
+    public void update(int usrId, MealTo mealTo) throws NotFoundException {
+        Meal meal = get(usrId, mealTo.getId());
+        repository.save(usrId, MealsUtil.updateFromTo(meal, mealTo));
     }
 
     @Override

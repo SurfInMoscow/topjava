@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.service;
 
 import org.springframework.lang.Nullable;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -19,6 +20,8 @@ public interface MealService {
     Meal get(int usrId, int id) throws NotFoundException;
 
     void update(int usrId, Meal meal) throws NotFoundException;
+
+    void update(int usrId, MealTo mealTo) throws NotFoundException;
 
     List<Meal> getAll(int usrId);
 

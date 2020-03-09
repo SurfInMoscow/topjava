@@ -1,3 +1,5 @@
+var mealAjaxUrl = "ajax/meal/";
+
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
@@ -14,13 +16,20 @@ function clearFilter() {
 // $(document).ready(function () {
 $(function () {
     makeEditable({
-            ajaxUrl: "ajax/meal/",
+            ajaxUrl: mealAjaxUrl,
             datatableApi: $("#datatable").DataTable({
+                "ajax": {
+                    "url": mealAjaxUrl,
+                    "dataSrc": ""
+                },
                 "paging": false,
                 "info": true,
                 "columns": [
                     {
-                        "data": "datetime"
+                        "data": "datetime",
+                        "render": function (data) {
+                            return new Date(data);
+                        }
                     },
                     {
                         "data": "description"
@@ -29,12 +38,14 @@ $(function () {
                         "data": "calories"
                     },
                     {
-                        "defaultContent": "Edit",
-                        "orderable": false
+                        "orderable": false,
+                        "defaultContent": "",
+                        "render": renderEditBtn
                     },
                     {
-                        "defaultContent": "Delete",
-                        "orderable": false
+                        "orderable": false,
+                        "defaultContent": "",
+                        "render": renderDeleteBtn
                     }
                 ],
                 "order": [
@@ -42,8 +53,10 @@ $(function () {
                         0,
                         "desc"
                     ]
-                ]
+                ],
             }),
-            updateTable: updateFilteredTable
-        });
+        updateTable: function () {
+            $.get(mealAjaxUrl, updateTableByData);
+        }
+    });
 });

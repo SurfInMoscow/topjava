@@ -29,6 +29,12 @@ public abstract class AbstractMealController {
         return service.save(userId, meal);
     }
 
+    public Meal save(MealTo mealTo) {
+        int userId = SecurityUtil.authUserId();
+        log.info("save {}", mealTo);
+        return save(MealsUtil.createNewFromTo(mealTo));
+    }
+
     public void delete(int id) throws NotFoundException {
         int userId = SecurityUtil.authUserId();
         log.info("delete {}", id);
@@ -45,6 +51,12 @@ public abstract class AbstractMealController {
         int userId = SecurityUtil.authUserId();
         log.info("update {} with id={}", meal, userId);
         service.save(userId, meal);
+    }
+
+    public void update(MealTo mealTo) {
+        int userId = SecurityUtil.authUserId();
+        log.info("update {} with id={}", mealTo, userId);
+        service.update(userId, mealTo);
     }
 
     public List<MealTo> getAll() {
