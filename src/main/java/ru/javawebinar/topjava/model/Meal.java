@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.model;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 import ru.javawebinar.topjava.util.Counter;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Meal extends AbstractBaseEntity {
 
     @NotNull
     @Column(name = "dateTime", nullable = false, columnDefinition = "timestamp default now()")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateTime;
 
     @NotBlank
@@ -36,7 +38,7 @@ public class Meal extends AbstractBaseEntity {
     @NotNull
     @Range(min = 10, max = 5000)
     @Column(name = "calories", nullable = false)
-    private int calories;
+    private Integer calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_m")
@@ -116,34 +118,12 @@ public class Meal extends AbstractBaseEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        Meal meal = (Meal) o;
-
-        if (calories != meal.calories) return false;
-        if (!dateTime.equals(meal.dateTime)) return false;
-        return description.equals(meal.description);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + dateTime.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + calories;
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "Meal{" +
-                "dateTime=" + dateTime +
+                "id=" + id +
+                ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
-                ", user=" + user +
                 '}';
     }
 }

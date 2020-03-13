@@ -8,13 +8,6 @@ import ru.javawebinar.topjava.web.meal.MealRestController;
 @Controller
 public class RootController {
 
-    private final MealRestController mealRestController;
-
-    @Autowired
-    public RootController(MealRestController mealRestController) {
-        this.mealRestController = mealRestController;
-    }
-
     @GetMapping("/")
     public String root() {
         return "redirect:meals";

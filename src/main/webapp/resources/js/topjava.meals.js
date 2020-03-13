@@ -26,9 +26,12 @@ $(function () {
                 "info": true,
                 "columns": [
                     {
-                        "data": "datetime",
-                        "render": function (data) {
-                            return new Date(data);
+                        "data": "dateTime",
+                        "render": function (date, type, row) {
+                            if (type === 'display') {
+                                return date.replace('T', ' ').substr(0, 16);
+                            }
+                            return date;
                         }
                     },
                     {
@@ -54,6 +57,9 @@ $(function () {
                         "desc"
                     ]
                 ],
+                "createdRow": function (row, data, dataIndex) {
+                    $(row).attr("data-mealExcess", data.excess);
+                }
             }),
         updateTable: function () {
             $.get(mealAjaxUrl, updateTableByData);

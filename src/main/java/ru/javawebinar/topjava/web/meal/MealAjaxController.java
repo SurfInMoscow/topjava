@@ -5,7 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -16,6 +18,13 @@ import java.util.StringJoiner;
 @RestController
 @RequestMapping(value = "/ajax/meal", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealAjaxController extends AbstractMealController {
+
+    @Override
+    @GetMapping(value = "/{id}")
+    public Meal get(@PathVariable int id) {
+        return super.get(id);
+    }
+
     @GetMapping
     @Override
     public List<MealTo> getAll() {
@@ -32,17 +41,7 @@ public class MealAjaxController extends AbstractMealController {
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid MealTo mealTo, BindingResult result) {
         if (result.hasErrors()) {
-            StringJoiner joiner = new StringJoiner("<br>");
-            result.getFieldErrors().forEach(fe -> {
-                String msg = fe.getDefaultMessage();
-                if (msg != null) {
-                    if (!msg.startsWith(fe.getField())) {
-                        msg = fe.getField() + ' ' + msg;
-                    }
-                    joiner.add(msg);
-                }
-            });
-            return ResponseEntity.unprocessableEntity().body(joiner.toString());
+            return ValidationUtil.getErrorResponse(result);
         }
        if (mealTo.isNew()) {
            super.save(mealTo);

@@ -19,7 +19,7 @@ public class MealTo extends BaseTo {
 
     private final int calories;
 
-    @JsonIgnore
+    //@JsonIgnore
     private final boolean excess;
 
     @ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
