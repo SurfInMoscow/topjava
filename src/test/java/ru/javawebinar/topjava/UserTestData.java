@@ -21,7 +21,7 @@ public class UserTestData {
     //public static TestMatchers<User> USER_MATCHERS = TestMatchers.useFieldsComparator(User.class, "registered", "meals", "password");
 
     public static void assertMatch(User actual, User expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "meals");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "meals", "password");
     }
 
     public static void assertMatch(Iterable<User> actual, User... expected) {
@@ -29,7 +29,7 @@ public class UserTestData {
     }
 
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("registered", "meals").isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("registered", "meals", "password").isEqualTo(expected);
     }
 
     public static ResultMatcher contentJson(User... expected) {
