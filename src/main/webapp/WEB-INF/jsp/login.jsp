@@ -5,7 +5,7 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
-<nav class="navbar navbar-light py-0" style="background-color: #b9fddc;">
+<%--<nav class="navbar navbar-light py-0" style="background-color: #b9fddc;">
     <div class="container">
         <div class="navbar-brand"><img src="resources/images/icon-meal.png"> <spring:message code="app.title"/></div>
         <form class="form-inline my-2" id="login_form" action="spring_security_check" method="post">
@@ -16,7 +16,8 @@
             </button>
         </form>
     </div>
-</nav>
+</nav>--%>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron py-0">
     <div class="container">
@@ -27,14 +28,24 @@
             <div class="message"><spring:message code="${param.message}"/></div>
         </c:if>
         <br/>
-        <p>
+       <%-- <p>
             <button type="submit" class="btn btn-lg btn-primary" onclick="login('user@yandex.ru', 'password')">
                 <spring:message code="app.login"/> User
             </button>
             <button type="submit" class="btn btn-lg btn-primary" onclick="login('admin@gmail.com', 'admin')">
                 <spring:message code="app.login"/> Admin
             </button>
-        </p>
+        </p>--%>
+        <sec:authorize access="isAnonymous()">
+            <div class="pt-4">
+                <button type="submit" class="btn btn-lg btn-primary" onclick="login('user@yandex.ru', 'password')">
+                    <spring:message code="app.login"/> User
+                </button>
+                <button type="submit" class="btn btn-lg btn-primary" onclick="login('admin@gmail.com', 'admin')">
+                    <spring:message code="app.login"/> Admin
+                </button>
+            </div>
+        </sec:authorize>
         <br/>
         <p>Стек технологий: <br>
             <a href="http://projects.spring.io/spring-security/">Spring Security</a>,
