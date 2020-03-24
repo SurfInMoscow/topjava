@@ -88,6 +88,8 @@
             </div>
             <div class="modal-body">
                 <form id="detailsForm">
+                    <input type="hidden" id="id" name="id">
+
                     <div class="form-group">
                         <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/></label>
                         <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
@@ -100,7 +102,7 @@
                     </div>
                     <div class="form-group">
                         <label for="calories" class="col-form-label"><spring:message code="meal.calories"/></label>
-                        <input type="text" class="form-control" id="calories" name="calories"
+                        <input type="number" class="form-control" id="calories" name="calories"
                                placeholder="<spring:message code="meal.calories"/>">
                     </div>
                 </form>

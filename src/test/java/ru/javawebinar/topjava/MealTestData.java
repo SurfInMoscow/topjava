@@ -24,10 +24,10 @@ public class MealTestData {
     public static final Meal userSupper = new Meal(USER_MEAL3_ID, LocalDateTime.of(2019, 5, 4, 18, 0), "ужин", 800);
     public static final Meal adminLunch = new Meal(ADMIN_MEAL1_ID, LocalDateTime.of(2019, 5, 4, 15, 0), "ланч", 1000);
 
-    public static final MealTo userBreakfast_to = new MealTo(LocalDateTime.of(2019, 5, 4, 10, 0), "завтрак", 500, true, USER_MEAL1_ID);
-    public static final MealTo userDinner_to = new MealTo(LocalDateTime.of(2019, 5, 4, 13, 0), "обед", 800, true, USER_MEAL2_ID);
-    public static final MealTo userSupper_to = new MealTo(LocalDateTime.of(2019, 5, 4, 18, 0), "ужин", 800, true, USER_MEAL3_ID);
-    public static final MealTo adminLunch_to = new MealTo(LocalDateTime.of(2019, 5, 4, 15, 0), "ланч", 1000, false, ADMIN_MEAL1_ID);
+    public static final MealTo userBreakfast_to = new MealTo( USER_MEAL1_ID, LocalDateTime.of(2019, 5, 4, 10, 0), "завтрак", 500, true);
+    public static final MealTo userDinner_to = new MealTo(USER_MEAL2_ID, LocalDateTime.of(2019, 5, 4, 13, 0), "обед", 800, true);
+    public static final MealTo userSupper_to = new MealTo(USER_MEAL3_ID, LocalDateTime.of(2019, 5, 4, 18, 0), "ужин", 800, true);
+    public static final MealTo adminLunch_to = new MealTo(ADMIN_MEAL1_ID, LocalDateTime.of(2019, 5, 4, 15, 0), "ланч", 1000, false);
 
     public static final List<Meal> MEALS = List.of(userSupper, userDinner, userBreakfast);
     public static final List<MealTo> MEALS_TO = List.of(userSupper_to, userDinner_to, userBreakfast_to);
